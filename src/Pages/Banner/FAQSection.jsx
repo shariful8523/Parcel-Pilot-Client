@@ -79,8 +79,8 @@ const FAQSection = () => {
                             </div>
                             <p
                                 className={`text-sm text-slate-500 px-4 transition-all duration-500 ease-in-out ${openIndex === index
-                                        ? 'opacity-100 max-h-[300px] translate-y-0 pt-4'
-                                        : 'opacity-0 max-h-0 -translate-y-2'
+                                    ? 'opacity-100 max-h-[300px] translate-y-0 pt-4'
+                                    : 'opacity-0 max-h-0 -translate-y-2'
                                     }`}
                             >
                                 {faq.answer}
@@ -88,16 +88,21 @@ const FAQSection = () => {
                         </div>
                     ))}
                 </div>
+                <div className="mt-10 flex flex-row w-2xs gap-2 md:gap-3 items-center justify-center px-4">
+                    {/* FAQ Button */}
+                    <button className="bg-[#CAEB66] flex-1 h-14 rounded-xl text-black font-medium">
+                        See More FAQ’s
+                    </button>
 
-                <div className="mt-10 gap-3 mr-4 hidden md:flex">
-                    
-
-                    <button className='bg-[#CAEB66] w-52 h-14 rounded-xl'>See More FAQ’s</button>
-
+                    {/* Arrow Button */}
                     <button className="bg-black -rotate-45 text-lime-300 w-12 h-12 rounded-full flex items-center justify-center">
                         <IoMdArrowForward size={28} />
                     </button>
                 </div>
+
+
+
+
             </div>
         </>
     );
