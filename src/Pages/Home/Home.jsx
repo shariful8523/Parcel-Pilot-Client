@@ -4,6 +4,7 @@ import Worksection from '../Banner/Worksection';
 import Services from '../Banner/Services';
 import TrustedBy from '../Banner/TrustedBy'
 import MerchantBanner from '../Banner/MerchantBanner';
+import Testimonial from '../Banner/Testimonial';
 
 
 const Home = () => {
@@ -14,7 +15,7 @@ const Home = () => {
             <Services />
             <TrustedBy />
             <MerchantBanner />
-
+            <Testimonial/>
         </div>
     );
 };
