@@ -5,6 +5,7 @@ import Services from '../Banner/Services';
 import TrustedBy from '../Banner/TrustedBy'
 import MerchantBanner from '../Banner/MerchantBanner';
 import Testimonial from '../Banner/Testimonial';
+import FAQSection from '../Banner/FAQSection';
 
 
 const Home = () => {
@@ -16,6 +17,7 @@ const Home = () => {
             <TrustedBy />
             <MerchantBanner />
             <Testimonial/>
+            <FAQSection/>
         </div>
     );
 };
