@@ -35,8 +35,8 @@ const features = [
 
 const TrustedBy = () => {
   return (
-    <section className=" w-10/12 mx-auto py-16   ">
-      <div className="w-11/12 mx-auto text-center  ">
+    <section className="w-10/12 mx-auto py-16">
+      <div className="w-11/12 mx-auto text-center">
         {/* Logos */}
         <h2 className="text-2xl mb-15 font-semibold text-gray-800">
           We’ve helped thousands of sales teams
@@ -47,7 +47,7 @@ const TrustedBy = () => {
               key={index}
               src={logo}
               alt="brand"
-              className=" w-52 object-contain"
+              className="w-52 max-w-[120px] object-contain sm:w-40"
             />
           ))}
         </div>
@@ -59,10 +59,10 @@ const TrustedBy = () => {
           {features.map((item, index) => (
             <div
               key={index}
-              className="w-11/12 mx-auto flex items-center gap-6 p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition"
+              className="w-11/12 mx-auto flex flex-col md:flex-row items-start md:items-center gap-6 p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition"
             >
               {/* Left Image */}
-              <div className="flex-shrink-0">
+              <div className="flex-shrink-0 mx-auto md:mx-0">
                 <img
                   src={item.image}
                   alt={item.title}
@@ -71,14 +71,14 @@ const TrustedBy = () => {
               </div>
 
               {/* Vertical Divider */}
-              <div className="h-28 border-l-2 border-dashed border-gray-300 mx-4"></div>
+              <div className="hidden md:block h-28 border-l-2 border-dashed border-gray-300 mx-4"></div>
 
               {/* Right Content */}
-              <div className="text-left">
-                <h3 className="text-lg font-bold text-[#083E4B]">
+              <div className="text-left flex-1 mt-4 md:mt-0">
+                <h3 className="text-lg font-bold text-[#083E4B] mb-2">
                   {item.title}
                 </h3>
-                <p className="text-gray-600 mt-2 mr-24 text-sm leading-relaxed">
+                <p className="text-gray-600 text-sm leading-relaxed break-words">
                   {item.description}
                 </p>
               </div>
@@ -88,7 +88,6 @@ const TrustedBy = () => {
 
         <hr className="border-dashed border-t-2 border-gray-300 my-12" />
       </div>
-
     </section>
   );
 };
