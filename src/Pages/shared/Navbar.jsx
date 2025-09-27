@@ -14,7 +14,7 @@ const Navbar = () => {
         </>
 
     return (
-        <div className="navbar bg-[#FFFFFF]  shadow-sm rounded-2xl w-11/12 mx-auto mt-3  ">
+        <div className="navbar bg-white/30 backdrop-blur-md shadow-sm rounded-2xl w-11/12 mx-auto mt-3 sticky top-0 z-50 border border-white/20">
 
             {/* Left side */}
             <div className="navbar-start">
