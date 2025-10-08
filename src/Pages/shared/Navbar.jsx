@@ -1,5 +1,6 @@
 import { IoMdArrowForward } from "react-icons/io";
 import logo from '../../assets/logo2.png'
+import { Link } from "react-router";
 
 const Navbar = () => {
 
@@ -52,7 +53,14 @@ const Navbar = () => {
 
             {/* Right side buttons */}
             <div className="navbar-end gap-3 mr-4 hidden md:flex">
-                <button className='border w-28 h-10 rounded-xl  '>Sign In</button>
+
+                <Link to="/login">
+                    <button
+                        className="border w-28 h-10 rounded-xl transition   hover:bg-lime-500 hover:text-white hover:border-lime-500">
+                        Sign In
+                    </button>
+                </Link>
+
 
                 <button className='bg-[#CAEB66] w-32 h-10 rounded-xl'>Be a Rider</button>
 
