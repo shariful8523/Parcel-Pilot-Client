@@ -4,6 +4,8 @@ import Logo from "../../../assets/logo2.png";
 import { Link } from "react-router";
 import { useForm } from "react-hook-form";
 import  useAuth  from "../../../Hooks/useAuth"
+import SocialLogin from "../socialLogin/socialLogin";
+import { updateProfile } from "firebase/auth";
 
 const SignUp = () => {
 
@@ -14,13 +16,26 @@ const SignUp = () => {
 
   const onSubmit = (data) => {
     createUser(data.email, data.password, data.name)
+    
       .then(result => {
+        const user = result.user
+        updateProfile(user, {
+          displayName: data.name,
+        })
+        
         console.log(result.user)
+
       })
+      
       .catch(error => {
         console.log(error.error)
       })
   };
+
+
+
+  
+  
 
 
 
@@ -133,14 +148,9 @@ const SignUp = () => {
           </div>
 
           {/* Google Signup */}
-          <button className="w-full flex items-center justify-center gap-2 border py-2 rounded-md hover:bg-gray-100 transition">
-            <img
-              src="https://www.svgrepo.com/show/355037/google.svg"
-              alt="google"
-              className="w-5 h-5"
-            />
-            Register with Google
-          </button>
+
+          <SocialLogin/>
+
         </div>
       </div>
 
