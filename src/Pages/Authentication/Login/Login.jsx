@@ -3,7 +3,7 @@ import Bannerimg from '../../../assets/authImage.png';
 import Logo from '../../../assets/logo2.png';
 import { useForm } from 'react-hook-form';
 import useAuth from '../../../Hooks/useAuth';
-
+import SocialLogin from '../socialLogin/socialLogin'
 const Login = () => {
 
 
@@ -91,14 +91,7 @@ const Login = () => {
                     </div>
 
                     {/* Google Login */}
-                    <button className="w-full flex items-center justify-center gap-2 border py-2 rounded-md hover:bg-gray-100 transition">
-                        <img
-                            src="https://www.svgrepo.com/show/355037/google.svg"
-                            alt="google"
-                            className="w-5 h-5"
-                        />
-                        Login with Google
-                    </button>
+                    <SocialLogin/>
                 </div>
             </div>
 
