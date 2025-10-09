@@ -1,14 +1,19 @@
 import { IoMdArrowForward } from "react-icons/io";
 import logo from '../../assets/logo2.png'
-import { Link } from "react-router";
+import { Link, NavLink } from "react-router";
+import useAuth from "../../Hooks/useAuth";
 
 const Navbar = () => {
+
+
+    const { user, logOut } = useAuth();
+
 
     const navItems =
         <>
             <li><a >Home </a> </li>
             <li><a >Services</a></li>
-            <li><a >Coverage</a></li>
+            <li><NavLink to='coverage'>Coverage</NavLink></li>
             <li><a >About Us</a></li>
             <li><a >Pricing</a></li>
             <li><a >Be a Rider</a></li>
@@ -53,16 +58,32 @@ const Navbar = () => {
 
             {/* Right side buttons */}
             <div className="navbar-end gap-3 mr-4 hidden md:flex">
+                {user ? (
+                    <>
 
-                <Link to="/login">
-                    <button
-                        className="border w-28 h-10 rounded-xl transition   hover:bg-lime-500 hover:text-white hover:border-lime-500">
-                        Sign In
-                    </button>
+                        <button
+                            onClick={logOut}
+                            className="border w-28 h-10 rounded-xl transition hover:bg-red-500 hover:text-white hover:border-red-500"
+                        >
+                            Logout
+                        </button>
+                    </>
+                ) : (
+                    <>
+                        <Link to="/login">
+                            <button
+                                className="border w-28 h-10 rounded-xl transition hover:bg-lime-500 hover:text-white hover:border-lime-500"
+                            >
+                                Sign In
+                            </button>
+                        </Link>
+
+                    </>
+                )}
+
+                <Link to="/signup">
+                    <button className='bg-[#CAEB66] w-32 h-10 rounded-xl'>Be a Rider</button>
                 </Link>
-
-
-                <button className='bg-[#CAEB66] w-32 h-10 rounded-xl'>Be a Rider</button>
 
                 <button className="bg-black -rotate-45 text-lime-300 w-12 h-12 rounded-full flex items-center justify-center">
                     <IoMdArrowForward size={28} />
