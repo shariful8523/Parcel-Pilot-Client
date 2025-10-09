@@ -3,30 +3,30 @@ import Bannerimg from "../../../assets/authImage.png";
 import Logo from "../../../assets/logo2.png";
 import { Link } from "react-router";
 import { useForm } from "react-hook-form";
-import  useAuth  from "../../../Hooks/useAuth"
+import useAuth from "../../../Hooks/useAuth"
 import SocialLogin from "../socialLogin/socialLogin";
 import { updateProfile } from "firebase/auth";
 
 const SignUp = () => {
 
   const { createUser } = useAuth()
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit , reset} = useForm();
 
 
 
   const onSubmit = (data) => {
     createUser(data.email, data.password, data.name)
-    
+
       .then(result => {
         const user = result.user
         updateProfile(user, {
           displayName: data.name,
         })
-        
-        console.log(result.user)
 
+        console.log(result.user)
+        reset();
       })
-      
+
       .catch(error => {
         console.log(error.error)
       })
@@ -34,8 +34,8 @@ const SignUp = () => {
 
 
 
-  
-  
+
+
 
 
 
@@ -149,7 +149,7 @@ const SignUp = () => {
 
           {/* Google Signup */}
 
-          <SocialLogin/>
+          <SocialLogin />
 
         </div>
       </div>
