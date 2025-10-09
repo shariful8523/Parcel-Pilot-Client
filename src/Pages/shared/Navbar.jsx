@@ -11,16 +11,17 @@ const Navbar = () => {
 
     const navItems =
         <>
-            <li><a >Home </a> </li>
+            <li><NavLink to="/">Home</NavLink> </li>
             <li><a >Services</a></li>
             <li><NavLink to='coverage'>Coverage</NavLink></li>
+            <li><NavLink to="/sendparcel">Send A Parcel</NavLink></li>
             <li><a >About Us</a></li>
             <li><a >Pricing</a></li>
             <li><a >Be a Rider</a></li>
         </>
 
     return (
-        <div className="navbar bg-white/30 backdrop-blur-md shadow-sm rounded-2xl w-11/12 mx-auto mt-3 sticky top-0 z-50 border border-white/20">
+        <div className="navbar bg-[#FFFFFF] backdrop-blur-md shadow-sm rounded-2xl w-11/12 mx-auto mt-3 sticky top-0 z-50 border border-white/20">
 
             {/* Left side */}
             <div className="navbar-start">

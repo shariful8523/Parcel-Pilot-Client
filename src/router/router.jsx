@@ -5,6 +5,8 @@ import AuthLayout from "../layouts/AuthLayout";
 import Login from "../Pages/Authentication/Login/Login";
 import SignUp from "../Pages/Authentication/SignIn/SignUp";
 import Coverage from "../Pages/Coverage/Coverage";
+import SendParcel from "../Pages/SendParcel/SendParcel";
+import PrivateRoute from "../routes/PrivateRouter"
 
 const router = createBrowserRouter([
     {
@@ -19,7 +21,12 @@ const router = createBrowserRouter([
                 path: 'coverage',
                 Component: Coverage,
                 loader: () => fetch('./warehouses.json')
-            }
+            },
+            {
+                path: 'sendparcel',
+                element: <PrivateRoute><SendParcel></SendParcel></PrivateRoute>,
+                loader: () => fetch('./warehouses.json')
+            },
         ]
     },
     {
@@ -27,12 +34,12 @@ const router = createBrowserRouter([
         Component: AuthLayout,
         children: [
             {
-                path:'login',
+                path: 'login',
                 Component: Login,
             },
             {
                 path: 'signup',
-                Component: SignUp ,
+                Component: SignUp,
             }
         ]
     }

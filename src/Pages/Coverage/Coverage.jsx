@@ -6,7 +6,7 @@ const Coverage = () => {
     const serviceCenters = useLoaderData();
     
     return (
-        <div className="w-11/12 mx-auto bg-[#fcf6f6] mt-5 -mb-25 rounded-2xl py-12 px-4">
+        <div className="w-11/12 mx-auto bg-[#FFFFFF] mt-5 -mb-25 rounded-2xl py-12 px-4">
             <div className="max-w-5xl mx-auto text-center">
                 <h1 className="text-3xl text-left md:text-4xl font-bold text-gray-900 mb-6">
                     We are available in 64 districts
