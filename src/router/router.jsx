@@ -7,6 +7,8 @@ import SignUp from "../Pages/Authentication/SignIn/SignUp";
 import Coverage from "../Pages/Coverage/Coverage";
 import SendParcel from "../Pages/SendParcel/SendParcel";
 import PrivateRoute from "../routes/PrivateRouter"
+import DashboardLayout from "../layouts/DashboardLayout";
+import MyParcel from "../Pages/Dashboard/MyParcel";
 
 const router = createBrowserRouter([
     {
@@ -40,6 +42,17 @@ const router = createBrowserRouter([
             {
                 path: 'signup',
                 Component: SignUp,
+            }
+        ]
+    },
+
+    {
+        path: '/dashboard',
+        element: <PrivateRoute> <DashboardLayout /> </PrivateRoute>,
+        children: [
+            {
+                path: 'myParcel',
+                Component: MyParcel ,
             }
         ]
     }
