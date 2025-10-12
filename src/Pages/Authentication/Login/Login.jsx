@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router';
+import { Link, useLocation, useNavigate } from 'react-router';
 import Bannerimg from '../../../assets/authImage.png';
 import Logo from '../../../assets/logo2.png';
 import { useForm } from 'react-hook-form';
@@ -10,6 +10,10 @@ const Login = () => {
     const { register, handleSubmit, reset } = useForm();
     const { signIn } = useAuth();
     const navigate = useNavigate();
+    const location = useLocation();
+
+
+    const from = location.state?.from || '/';
 
     const onSubmit = (data) => {
         
@@ -17,7 +21,7 @@ const Login = () => {
             .then((result) => {
                 console.log('User logged in:', result.user);
                 reset();
-                navigate("/");
+                navigate(from);
             })
             .catch((error) => {
                 console.error('Login error:', error.message);

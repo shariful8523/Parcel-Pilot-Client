@@ -3,11 +3,16 @@ import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import useAuth from "../../Hooks/useAuth";
 import { format } from "date-fns";
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router";
 
 const MyParcel = () => {
     const { user } = useAuth();
     const axiosSecure = useAxiosSecure();
     const queryClient = useQueryClient();
+    const navigate = useNavigate()
+
+
+
 
     const { data: parcels = [], isLoading } = useQuery({
         queryKey: ["my-parcels", user?.email],
@@ -56,6 +61,10 @@ const MyParcel = () => {
         }
     };
 
+    const handelPay = (id) => {
+           navigate(`/dashboard/payment/${id}`)
+    }
+ 
     if (isLoading) return <p className="text-center mt-10">Loading...</p>;
 
     return (
@@ -108,7 +117,7 @@ const MyParcel = () => {
                                         View
                                     </button>
                                     {parcel.payment_status === "unpaid" && (
-                                        <button className="bg-green-500 text-white px-3 py-1 rounded-md text-sm hover:bg-green-600">
+                                        <button onClick={() => handelPay(parcel._id)} className="bg-green-500 text-white px-3 py-1 rounded-md text-sm hover:bg-green-600">
                                             Pay
                                         </button>
                                     )}
