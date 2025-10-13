@@ -6,14 +6,14 @@ import { useForm } from "react-hook-form";
 import useAuth from "../../../Hooks/useAuth";
 import SocialLogin from "../socialLogin/socialLogin";
 import Swal from "sweetalert2";
-import { FaEye, FaEyeSlash } from "react-icons/fa"; // 👈 Added icons
+import { FaEye, FaEyeSlash } from "react-icons/fa"; 
 
 const Login = () => {
     const { register, handleSubmit, reset } = useForm();
     const { signIn } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
-    const [showPassword, setShowPassword] = useState(false); // 👈 State for password visibility
+    const [showPassword, setShowPassword] = useState(false); 
 
     const from = location.state?.from || "/";
 

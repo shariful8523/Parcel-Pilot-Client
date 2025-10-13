@@ -7,7 +7,7 @@ import Swal from "sweetalert2"; // 👈 import SweetAlert2
 const Navbar = () => {
     const { user, logOut } = useAuth();
 
-    // 👇 Logout Handler
+    //  Logout Handler
     const handleLogout = () => {
         Swal.fire({
             title: "Are you sure?",
@@ -110,7 +110,7 @@ const Navbar = () => {
                     </>
                 )}
 
-                <Link to="/signup">
+                <Link to="/beArider">
                     <button className="bg-[#CAEB66] w-32 h-10 rounded-xl">Be a Rider</button>
                 </Link>
 

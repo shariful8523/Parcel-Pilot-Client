@@ -23,20 +23,20 @@ const SignUp = () => {
 
   const onSubmit = async (data) => {
     try {
-      // ✅ Password Validation
+      //  Password Validation
       if (data.password.length < 6) {
         Swal.fire("Weak Password", "Password must be at least 6 characters!", "warning");
         return;
       }
 
-      // ✅ Create Firebase User
+      //  Create Firebase User
       const result = await createUser(data.email, data.password);
       const user = result.user;
 
-      // ✅ Update Firebase display name
+      //  Update Firebase display name
       await updateProfile(user, { displayName: data.name });
 
-      // ✅ Prepare MongoDB user object
+      // Prepare MongoDB user object
       const userInfo = {
         name: data.name,
         email: data.email,
@@ -46,10 +46,10 @@ const SignUp = () => {
         photoURL: user.photoURL || "",
       };
 
-      // ✅ Save to backend
+      //  Save to backend
       await axiosInstance.post("/users", userInfo);
 
-      // ✅ Logout instantly
+      //  Logout instantly
       await logOut();
 
       Swal.fire({
