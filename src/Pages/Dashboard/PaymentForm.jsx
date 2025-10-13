@@ -1,23 +1,24 @@
 import React, { useState } from "react";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
-import { useParams } from "react-router";
+import { useParams, useNavigate } from "react-router";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
+import useAuth from "../../Hooks/useAuth";
+import Swal from "sweetalert2";
 
 const PaymentForm = () => {
     const stripe = useStripe();
     const elements = useElements();
+    const navigate = useNavigate();
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
     const [processing, setProcessing] = useState(false);
     const { parcelId } = useParams();
-    const axiosSecure = useAxiosSecure("");
+    const axiosSecure = useAxiosSecure();
+    const { user } = useAuth();
 
-    //  Fetch parcel info by ID
-    const {
-        isPending,
-        data: parcelInfo = {},
-    } = useQuery({
+    // Fetch parcel info
+    const { isLoading, data: parcelInfo = {} } = useQuery({
         queryKey: ["parcels", parcelId],
         queryFn: async () => {
             const res = await axiosSecure.get(`/parcels/${parcelId}`);
@@ -25,36 +26,107 @@ const PaymentForm = () => {
         },
     });
 
-    if (isPending) {
-        return <p className="text-center mt-10 text-lg font-semibold">Loading...</p>;
+    if (isLoading) {
+        return (
+            <p className="text-center mt-10 text-lg font-semibold">Loading...</p>
+        );
     }
 
     const amount = parcelInfo?.deliveryCost || 0;
+    const amountInCent = amount * 100;
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setProcessing(true);
+        setSuccess("");
+        setError("");
+
         if (!stripe || !elements) return;
 
-        const card = elements.getElement(CardElement);
-        if (!card) return;
+        const cardElement = elements.getElement(CardElement);
+        if (!cardElement) return;
 
-        const { error, paymentMethod } = await stripe.createPaymentMethod({
-            type: "card",
-            card,
-            billing_details: {
-                name: e.target.full_name.value,
-            },
-        });
+        try {
+            // Create Payment Method
+            const { error: cardError } = await stripe.createPaymentMethod({
+                type: "card",
+                card: cardElement,
+                billing_details: {
+                    name: user.displayName || e.target.full_name.value,
+                    email: user.email,
+                },
+            });
 
-        if (error) {
-            setError(error.message);
-            setSuccess("");
-        } else {
-            setError("");
-            setSuccess(" Payment method created successfully!");
-            // এখানে backend-এ call করে PaymentIntent তৈরি করতে পারো
-            // await axiosSecure.post("/create-payment-intent", { amount });
+            if (cardError) {
+                setError(cardError.message);
+                setProcessing(false);
+                return;
+            }
+
+            // Create Payment Intent
+            const res = await axiosSecure.post("/create-payment-intent", {
+                amountInCent,
+                parcelId,
+            });
+
+            const clientSecret = res.data.clientSecret;
+
+            // Confirm Payment
+            const result = await stripe.confirmCardPayment(clientSecret, {
+                payment_method: {
+                    card: cardElement,
+                    billing_details: {
+                        name: user.displayName,
+                        email: user.email,
+                    },
+                },
+            });
+
+            if (result.error) {
+                setError(result.error.message);
+                setProcessing(false);
+                return;
+            }
+
+            if (result.paymentIntent.status === "succeeded") {
+                // Save payment info to DB
+                const transactionId = result.paymentIntent.id;
+                const paymentData = {
+                    parcelId,
+                    userEmail: user.email,
+                    userName: user.displayName,
+                    amount,
+                    transactionId,
+                    paymentMethod: result.paymentIntent.payment_method_types[0],
+                };
+
+                const paymentRes = await axiosSecure.post("/payments", paymentData);
+
+                if (paymentRes.data.insertedId) {
+                    setSuccess("Payment successful!");
+
+                    //  SweetAlert toast
+                    Swal.fire({
+                        icon: "success",
+                        title: "Payment Successful!",
+                        text: "Your parcel is now marked as paid.",
+                        timer: 2000,
+                        showConfirmButton: false,
+                        
+                        toast: true,
+                    });
+
+                    //  Redirect to MyParcel component after 2 sec
+                    setTimeout(() => {
+                        navigate("/dashboard/myParcel");
+                    }, 5000);
+                } else {
+                    setError("Payment completed but failed to record in database.");
+                }
+            }
+        } catch (err) {
+            console.log(err);
+            setError("Something went wrong during payment.");
         }
 
         setProcessing(false);
@@ -69,7 +141,6 @@ const PaymentForm = () => {
                     </h2>
 
                     <div className="lg:flex lg:items-start lg:gap-12">
-                        {/* Payment Form */}
                         <form
                             onSubmit={handleSubmit}
                             className="w-full rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800 sm:p-6 lg:max-w-xl lg:p-8 space-y-4"
@@ -103,7 +174,6 @@ const PaymentForm = () => {
                                 />
                             </div>
 
-                            {/*  Amount Display */}
                             <input
                                 type="text"
                                 value={`৳ ${amount}`}
@@ -122,8 +192,6 @@ const PaymentForm = () => {
                                 {processing ? "Processing..." : "Pay Now"}
                             </button>
                         </form>
-
-
                     </div>
                 </div>
             </div>

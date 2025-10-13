@@ -9,19 +9,19 @@ const MyParcel = () => {
     const { user } = useAuth();
     const axiosSecure = useAxiosSecure();
     const queryClient = useQueryClient();
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
-
-
-
+    // Fetch parcels
     const { data: parcels = [], isLoading } = useQuery({
         queryKey: ["my-parcels", user?.email],
         queryFn: async () => {
             const res = await axiosSecure.get(`/parcels?email=${user?.email}`);
             return res.data;
         },
+        enabled: !!user?.email, // wait for user email
     });
 
+    // Delete parcel
     const handleDelete = async (id) => {
         const result = await Swal.fire({
             title: "Are you sure?",
@@ -37,11 +37,9 @@ const MyParcel = () => {
             try {
                 const res = await axiosSecure.delete(`/parcels/${id}`);
 
-                if (res.data.deletedCount > 0) {
-                    // Refetch the parcels list
-                    queryClient.invalidateQueries(["my-parcels", user?.email]);
+                if (res.data.message) {
+                    await queryClient.invalidateQueries(["my-parcels", user?.email]);
 
-                    // Success alert
                     Swal.fire({
                         title: "Deleted!",
                         text: "Parcel has been deleted.",
@@ -56,15 +54,16 @@ const MyParcel = () => {
                     text: "Failed to delete parcel.",
                     icon: "error",
                 });
-                console.log(error)
+                console.log(error);
             }
         }
     };
 
-    const handelPay = (id) => {
-           navigate(`/dashboard/payment/${id}`)
-    }
- 
+    // Navigate to payment page
+    const handlePay = (id) => {
+        navigate(`/dashboard/payment/${id}`);
+    };
+
     if (isLoading) return <p className="text-center mt-10">Loading...</p>;
 
     return (
@@ -101,8 +100,8 @@ const MyParcel = () => {
                                 <td>
                                     <span
                                         className={`px-2 py-1 rounded-full text-sm font-semibold ${parcel.payment_status === "paid"
-                                                ? "bg-green-100 text-green-700"
-                                                : "bg-red-100 text-red-600"
+                                            ? "bg-green-100 text-green-700"
+                                            : "bg-red-100 text-red-600"
                                             }`}
                                     >
                                         {parcel.payment_status}
@@ -111,13 +110,15 @@ const MyParcel = () => {
                                 <td>
                                     {parcel.payment_status === "paid" ? "Online Payment" : "Not Paid"}
                                 </td>
-
                                 <td className="space-x-2">
                                     <button className="bg-blue-500 text-white px-3 py-1 rounded-md text-sm hover:bg-blue-600">
                                         View
                                     </button>
                                     {parcel.payment_status === "unpaid" && (
-                                        <button onClick={() => handelPay(parcel._id)} className="bg-green-500 text-white px-3 py-1 rounded-md text-sm hover:bg-green-600">
+                                        <button
+                                            onClick={() => handlePay(parcel._id)}
+                                            className="bg-green-500 text-white px-3 py-1 rounded-md text-sm hover:bg-green-600"
+                                        >
                                             Pay
                                         </button>
                                     )}
