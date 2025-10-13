@@ -4,13 +4,18 @@ import { AiFillHome } from 'react-icons/ai';
 import { MdOutlineInventory2 } from 'react-icons/md';
 import { RiHistoryLine } from 'react-icons/ri';
 import { FaSearchLocation } from 'react-icons/fa';
+import { FaMotorcycle, FaHourglassHalf } from "react-icons/fa";
+
+
 
 const DashboardLayout = () => {
     const menuItems = [
         { to: '/', label: 'Home', icon: <AiFillHome /> },
         { to: '/dashboard/myParcel', label: 'My Parcels', icon: <MdOutlineInventory2 /> },
-        { to: '/dashboard/paymentHistory', label: 'Payment History', icon: <RiHistoryLine  /> },
+        { to: '/dashboard/paymentHistory', label: 'Payment History', icon: <RiHistoryLine /> },
         { to: '/dashboard/track', label: 'Track a Package', icon: <FaSearchLocation /> },
+        { to: '/dashboard/activeRiders', label: 'Active Riders', icon: <FaMotorcycle/>,},
+        {to: '/dashboard/pendingRiders', label: 'Pending Riders',icon: <FaHourglassHalf  />,},
     ];
 
     return (
@@ -44,8 +49,7 @@ const DashboardLayout = () => {
                             <NavLink
                                 to={item.to}
                                 className={({ isActive }) =>
-                                    `flex items-center gap-2 px-3 py-2 rounded-md transition-colors ${
-                                        isActive ? 'bg-blue-100 text-blue-600 font-semibold' : 'hover:bg-gray-100 hover:text-blue-500'
+                                    `flex items-center gap-2 px-3 py-2 rounded-md transition-colors ${isActive ? 'bg-blue-100 text-blue-600 font-semibold' : 'hover:bg-gray-100 hover:text-blue-500'
                                     }`
                                 }
                             >
