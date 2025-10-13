@@ -1,18 +1,31 @@
 import React from 'react';
 import useAuth from '../../../Hooks/useAuth';
 import { useLocation, useNavigate } from 'react-router';
+import useAxios from '../../../Hooks/useAxios';
 
 const SocialLogin = () => {
     const { signInWithGoogle } = useAuth();
     const location = useLocation();
     const navigate = useNavigate();
-
-      const from = location.state?.from || '/';
+    const axiosInstance = useAxios();
+    const from = location.state?.from || '/';
 
     const handleGoogleSignIn = () => {
         signInWithGoogle()
-            .then(result => {
-                console.log("Google Sign-in successful:", result.user);
+            .then(async (result) => {
+                const user = result.user;
+                //  Prepare user info for MongoDB
+                const userInfo = {
+                    name: user.displayName,
+                    email: user.email,
+                    role: "user",
+                    created_at: new Date().toISOString(),
+                    last_log_in: new Date().toISOString(),
+                    photoURL: user.photoURL || "",
+                };
+
+                await axiosInstance.post("/users", userInfo);
+
                 navigate(from)
             })
             .catch(error => {

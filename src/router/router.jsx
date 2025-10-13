@@ -11,6 +11,7 @@ import DashboardLayout from "../layouts/DashboardLayout";
 import MyParcel from "../Pages/Dashboard/MyParcel";
 import Payment from "../Pages/Dashboard/Payment";
 import PaymentHistory from "../Pages/Dashboard/PaymentHistory";
+import TrackParcel from "../Pages/Dashboard/TrackParcel";
 
 const router = createBrowserRouter([
     {
@@ -45,7 +46,7 @@ const router = createBrowserRouter([
                 path: 'signup',
                 Component: SignUp,
             },
-            
+
         ]
     },
 
@@ -55,18 +56,19 @@ const router = createBrowserRouter([
         children: [
             {
                 path: 'myParcel',
-                Component: MyParcel ,
+                Component: MyParcel,
             },
             {
                 path: 'payment/:parcelId',
                 Component: Payment,
             },
             {
-                path:'paymentHistory',
+                path: 'paymentHistory',
                 Component: PaymentHistory,
             },
             {
-
+                path: 'track',
+                Component: TrackParcel,
             }
         ]
     }

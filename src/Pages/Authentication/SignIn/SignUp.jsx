@@ -6,30 +6,48 @@ import { useForm } from "react-hook-form";
 import useAuth from "../../../Hooks/useAuth"
 import SocialLogin from "../socialLogin/socialLogin";
 import { updateProfile } from "firebase/auth";
+import useAxios from "../../../Hooks/useAxios";
 
 const SignUp = () => {
 
   const { createUser } = useAuth()
-  const { register, handleSubmit , reset} = useForm();
+  const { register, handleSubmit, reset } = useForm();
+  const axiosInstance = useAxios();
 
 
 
-  const onSubmit = (data) => {
-    createUser(data.email, data.password, data.name)
+  const onSubmit = async (data) => {
+    try {
+      //  Create user in Firebase
+      const result = await createUser(data.email, data.password);
+      const user = result.user;
 
-      .then(result => {
-        const user = result.user
-        updateProfile(user, {
-          displayName: data.name,
-        })
+      // Update Firebase profile name
+      await updateProfile(user, {
+        displayName: data.name,
+      });
 
-        console.log(result.user)
-        reset();
-      })
+      //  Prepare user info for MongoDB
+      const userInfo = {
+        name: data.name,
+        email: data.email,
+        role: "user",
+        created_at: new Date().toISOString(),
+        last_log_in: new Date().toISOString(),
+        photoURL: user.photoURL || "",
+      };
 
-      .catch(error => {
-        console.log(error.error)
-      })
+      //  Save user info to backend
+      await axiosInstance.post("/users", userInfo);
+
+      //  Reset form
+      reset();
+
+      
+      
+    } catch (error) {
+      console.error("❌ Signup error:", error);
+    }
   };
 
 

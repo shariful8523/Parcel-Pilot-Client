@@ -3,14 +3,14 @@ import logoImg from '../assets/logo2.png';
 import { AiFillHome } from 'react-icons/ai';
 import { MdOutlineInventory2 } from 'react-icons/md';
 import { RiHistoryLine } from 'react-icons/ri';
-import { BiPackage } from 'react-icons/bi';
+import { FaSearchLocation } from 'react-icons/fa';
 
 const DashboardLayout = () => {
     const menuItems = [
         { to: '/', label: 'Home', icon: <AiFillHome /> },
         { to: '/dashboard/myParcel', label: 'My Parcels', icon: <MdOutlineInventory2 /> },
         { to: '/dashboard/paymentHistory', label: 'Payment History', icon: <RiHistoryLine  /> },
-        { to: '/dashboard/track', label: 'Track a Package', icon: <BiPackage /> },
+        { to: '/dashboard/track', label: 'Track a Package', icon: <FaSearchLocation /> },
     ];
 
     return (
