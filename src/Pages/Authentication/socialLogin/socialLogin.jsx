@@ -8,29 +8,30 @@ const SocialLogin = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const axiosInstance = useAxios();
-    const from = location.state?.from || '/';
+  
+    const from = location.state?.from?.pathname || '/';
 
-    const handleGoogleSignIn = () => {
-        signInWithGoogle()
-            .then(async (result) => {
-                const user = result.user;
-                //  Prepare user info for MongoDB
-                const userInfo = {
-                    name: user.displayName,
-                    email: user.email,
-                    role: "user",
-                    created_at: new Date().toISOString(),
-                    last_log_in: new Date().toISOString(),
-                    photoURL: user.photoURL || "",
-                };
+    const handleGoogleSignIn = async () => {
+        try {
+            const result = await signInWithGoogle();
+            const user = result.user;
 
-                await axiosInstance.post("/users", userInfo);
+            const userInfo = {
+                name: user.displayName,
+                email: user.email,
+                role: "user",
+                created_at: new Date().toISOString(),
+                last_log_in: new Date().toISOString(),
+                photoURL: user.photoURL || "",
+            };
 
-                navigate(from)
-            })
-            .catch(error => {
-                console.error("Google Sign-in error:", error.message);
-            });
+            await axiosInstance.post("/users", userInfo);
+
+            
+            navigate(from, { replace: true });
+        } catch (error) {
+            console.error("Google Sign-in error:", error.message);
+        }
     };
 
     return (
