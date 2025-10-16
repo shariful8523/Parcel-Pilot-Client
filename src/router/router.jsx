@@ -6,7 +6,7 @@ import Login from "../Pages/Authentication/Login/Login";
 import SignUp from "../Pages/Authentication/SignIn/SignUp";
 import Coverage from "../Pages/Coverage/Coverage";
 import SendParcel from "../Pages/SendParcel/SendParcel";
-import PrivateRoute from "../routes/PrivateRouter"
+import PrivateRoute from "../routes/PrivateRouter";
 import DashboardLayout from "../layouts/DashboardLayout";
 import MyParcel from "../Pages/Dashboard/MyParcel";
 import Payment from "../Pages/Dashboard/Payment";
@@ -16,6 +16,8 @@ import BeARider from "../Pages/Dashboard/BeArider/BeArider";
 import ActiveRider from "../Pages/Dashboard/BeArider/ActiveRider";
 import PendingRider from "../Pages/Dashboard/BeArider/PendingRider";
 import ErrorPage from "../Pages/ErrorPage/ErrorPage";
+
+
 
 const router = createBrowserRouter([
     {
