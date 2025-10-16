@@ -15,11 +15,13 @@ import TrackParcel from "../Pages/Dashboard/TrackParcel";
 import BeARider from "../Pages/Dashboard/BeArider/BeArider";
 import ActiveRider from "../Pages/Dashboard/BeArider/ActiveRider";
 import PendingRider from "../Pages/Dashboard/BeArider/PendingRider";
+import ErrorPage from "../Pages/ErrorPage/ErrorPage";
 
 const router = createBrowserRouter([
     {
         path: "/",
         Component: RootLayout,
+        errorElement: <ErrorPage />,
         children: [
             {
                 index: true,
