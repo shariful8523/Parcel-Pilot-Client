@@ -17,6 +17,8 @@ import ActiveRider from "../Pages/Dashboard/BeArider/ActiveRider";
 import PendingRider from "../Pages/Dashboard/BeArider/PendingRider";
 import ErrorPage from "../Pages/ErrorPage/ErrorPage";
 import MakeAdmin from "../Pages/Dashboard/MakeAdmine/MakeAdmin";
+import Forbidden from "../Pages/Forbidden/Forbidden";
+import AdminRoute from "../routes/AdminRoute";
 
 
 
@@ -36,13 +38,17 @@ const router = createBrowserRouter([
                 loader: () => fetch('./warehouses.json')
             },
             {
+                path: 'forbidden',
+                Component: Forbidden,
+            },
+            {
                 path: 'sendparcel',
                 element: <PrivateRoute><SendParcel></SendParcel></PrivateRoute>,
                 loader: () => fetch('./warehouses.json')
             },
             {
                 path: 'beArider',
-                element: <PrivateRoute><BeARider/></PrivateRoute>,
+                element: <PrivateRoute><BeARider /></PrivateRoute>,
                 loader: () => fetch('./warehouses.json')
             }
         ]
@@ -84,16 +90,16 @@ const router = createBrowserRouter([
                 Component: TrackParcel,
             },
             {
-                path:'activeRiders',
-                Component: ActiveRider,
+                path: 'activeRiders',
+                element: <AdminRoute><ActiveRider /></AdminRoute>
             },
             {
-                path:'pendingRiders',
-                Component: PendingRider,
+                path: 'pendingRiders',
+                element: <AdminRoute><PendingRider /></AdminRoute>
             },
             {
                 path: 'makeadmin',
-                Component: MakeAdmin,
+                element: <AdminRoute><MakeAdmin /></AdminRoute>
             }
         ]
     }
