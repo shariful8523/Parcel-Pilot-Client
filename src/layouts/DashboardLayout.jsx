@@ -7,6 +7,7 @@ import { FaSearchLocation } from 'react-icons/fa';
 import { FaMotorcycle, FaHourglassHalf } from "react-icons/fa";
 import useUserRole from '../Hooks/useUserRole';
 import { FaUserShield } from "react-icons/fa";
+import { FaUserPlus } from "react-icons/fa";
 
 
 const DashboardLayout = () => {
@@ -28,7 +29,8 @@ const DashboardLayout = () => {
         menuItems.push(
             { to: '/dashboard/activeRiders', label: 'Active Riders', icon: <FaMotorcycle /> },
             { to: '/dashboard/pendingRiders', label: 'Pending Riders', icon: <FaHourglassHalf /> },
-            { to: '/dashboard/makeadmin', label: 'Make Admin', icon: <FaUserShield /> }
+            { to: '/dashboard/makeadmin', label: 'Make Admin', icon: <FaUserShield /> },
+            { to: '/dashboard/pending-riders', label: 'Assign Rider', icon: <FaUserPlus /> },
         );
     }
 

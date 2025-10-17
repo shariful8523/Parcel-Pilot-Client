@@ -19,6 +19,7 @@ import ErrorPage from "../Pages/ErrorPage/ErrorPage";
 import MakeAdmin from "../Pages/Dashboard/MakeAdmine/MakeAdmin";
 import Forbidden from "../Pages/Forbidden/Forbidden";
 import AdminRoute from "../routes/AdminRoute";
+import AssignRider from "../Pages/Dashboard/AssignRider";
 
 
 
@@ -96,6 +97,10 @@ const router = createBrowserRouter([
             {
                 path: 'pendingRiders',
                 element: <AdminRoute><PendingRider /></AdminRoute>
+            },
+            {
+                path: 'pending-riders',
+                element: <AdminRoute><AssignRider /></AdminRoute>
             },
             {
                 path: 'makeadmin',

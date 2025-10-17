@@ -1,23 +1,37 @@
-import axios from 'axios';
-import React from 'react';
-import useAuth from './useAuth';
-
-const axiosSecure = axios.create({
-    baseURL: `http://localhost:5000`
-});
+import axios from "axios";
+import useAuth from "./useAuth";
+import { useNavigate } from "react-router";
 
 const useAxiosSecure = () => {
-    const {user} = useAuth();
+  const { user } = useAuth();
+  const navigate = useNavigate();
 
-    axiosSecure.interceptors.request.use(config => {
-        config.headers.Authorization = `Bearer ${user.accessToken}`
-        return config;
-    }, error => {
-        return Promise.reject(error);
-    })
+  const axiosSecure = axios.create({
+    baseURL: "http://localhost:5000",
+  });
 
+  // Request interceptor
+  axiosSecure.interceptors.request.use(async (config) => {
+    if (user) {
+      const token = await user.getIdToken(); // Firebase token
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  });
 
-    return axiosSecure;
+  // Response interceptor
+  axiosSecure.interceptors.response.use(
+    (res) => res,
+    (error) => {
+      const status = error.response?.status;
+      if (status === 403) {
+        navigate("/forbidden");
+      }
+      return Promise.reject(error);
+    }
+  );
+
+  return axiosSecure;
 };
 
 export default useAxiosSecure;
