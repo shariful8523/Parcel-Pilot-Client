@@ -3,7 +3,7 @@ import logoImg from '../assets/logo2.png';
 import { AiFillHome } from 'react-icons/ai';
 import { MdOutlineInventory2 } from 'react-icons/md';
 import { RiHistoryLine } from 'react-icons/ri';
-import { FaSearchLocation } from 'react-icons/fa';
+import { FaCheckCircle, FaClock, FaSearchLocation } from 'react-icons/fa';
 import { FaMotorcycle, FaHourglassHalf } from "react-icons/fa";
 import useUserRole from '../Hooks/useUserRole';
 import { FaUserShield } from "react-icons/fa";
@@ -24,12 +24,22 @@ const DashboardLayout = () => {
         { to: '/dashboard/track', label: 'Track a Package', icon: <FaSearchLocation /> },
     ];
 
+    // Rider link
+    if (!roleLoading && role === 'rider') {
+        menuItems.push(
+             { to: '/dashboard/pending-deliveries', label: 'Pending Deliveries', icon: <FaClock /> },
+             { to: '/dashboard/completed-deliveries', label: 'Completed Deliveries', icon: <FaCheckCircle/> },
+
+        );
+    }
+
+
     // Add admin items dynamically (if role = admin)
     if (!roleLoading && role === 'admin') {
         menuItems.push(
+            { to: '/dashboard/makeadmin', label: 'Make Admin', icon: <FaUserShield /> },
             { to: '/dashboard/activeRiders', label: 'Active Riders', icon: <FaMotorcycle /> },
             { to: '/dashboard/pendingRiders', label: 'Pending Riders', icon: <FaHourglassHalf /> },
-            { to: '/dashboard/makeadmin', label: 'Make Admin', icon: <FaUserShield /> },
             { to: '/dashboard/pending-riders', label: 'Assign Rider', icon: <FaUserPlus /> },
         );
     }
