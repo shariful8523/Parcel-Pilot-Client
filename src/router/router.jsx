@@ -12,10 +12,11 @@ import MyParcel from "../Pages/Dashboard/MyParcel";
 import Payment from "../Pages/Dashboard/Payment";
 import PaymentHistory from "../Pages/Dashboard/PaymentHistory";
 import TrackParcel from "../Pages/Dashboard/TrackParcel";
-import BeARider from "../Pages/Dashboard/BeArider/BeArider";
+import BeARider from "../Pages/Dashboard/BeArider/BeARider"
 import ActiveRider from "../Pages/Dashboard/BeArider/ActiveRider";
 import PendingRider from "../Pages/Dashboard/BeArider/PendingRider";
 import ErrorPage from "../Pages/ErrorPage/ErrorPage";
+import MakeAdmin from "../Pages/Dashboard/MakeAdmine/MakeAdmin";
 
 
 
@@ -41,7 +42,7 @@ const router = createBrowserRouter([
             },
             {
                 path: 'beArider',
-                element: <PrivateRoute><BeARider /></PrivateRoute>,
+                element: <PrivateRoute><BeARider/></PrivateRoute>,
                 loader: () => fetch('./warehouses.json')
             }
         ]
@@ -89,6 +90,10 @@ const router = createBrowserRouter([
             {
                 path:'pendingRiders',
                 Component: PendingRider,
+            },
+            {
+                path: 'makeadmin',
+                Component: MakeAdmin,
             }
         ]
     }

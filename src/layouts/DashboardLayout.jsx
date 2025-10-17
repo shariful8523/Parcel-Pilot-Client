@@ -5,18 +5,32 @@ import { MdOutlineInventory2 } from 'react-icons/md';
 import { RiHistoryLine } from 'react-icons/ri';
 import { FaSearchLocation } from 'react-icons/fa';
 import { FaMotorcycle, FaHourglassHalf } from "react-icons/fa";
-
+import useUserRole from '../Hooks/useUserRole';
+import { FaUserShield } from "react-icons/fa";
 
 
 const DashboardLayout = () => {
+
+    const { role, roleLoading } = useUserRole();
+
+
+
+    // Basic menu items
     const menuItems = [
         { to: '/', label: 'Home', icon: <AiFillHome /> },
         { to: '/dashboard/myParcel', label: 'My Parcels', icon: <MdOutlineInventory2 /> },
         { to: '/dashboard/paymentHistory', label: 'Payment History', icon: <RiHistoryLine /> },
         { to: '/dashboard/track', label: 'Track a Package', icon: <FaSearchLocation /> },
-        { to: '/dashboard/activeRiders', label: 'Active Riders', icon: <FaMotorcycle/>,},
-        {to: '/dashboard/pendingRiders', label: 'Pending Riders',icon: <FaHourglassHalf  />,},
     ];
+
+    // Add admin items dynamically (if role = admin)
+    if (!roleLoading && role === 'admin') {
+        menuItems.push(
+            { to: '/dashboard/activeRiders', label: 'Active Riders', icon: <FaMotorcycle /> },
+            { to: '/dashboard/pendingRiders', label: 'Pending Riders', icon: <FaHourglassHalf /> },
+            { to: '/dashboard/makeadmin', label: 'Make Admin', icon: <FaUserShield /> }
+        );
+    }
 
     return (
         <div className="drawer lg:drawer-open">

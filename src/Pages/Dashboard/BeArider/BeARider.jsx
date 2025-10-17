@@ -6,7 +6,7 @@ import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import { useLoaderData } from "react-router";
 import Swal from "sweetalert2";
 
-const BeARiderForm = () => {
+const BeARider = () => {
     const { user } = useAuth();
     const {
         register,
@@ -216,4 +216,4 @@ const BeARiderForm = () => {
     );
 };
 
-export default BeARiderForm;
+export default BeARider;
