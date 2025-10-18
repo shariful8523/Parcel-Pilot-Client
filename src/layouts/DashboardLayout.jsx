@@ -18,7 +18,7 @@ const DashboardLayout = () => {
 
     // Basic menu items
     const menuItems = [
-        { to: '/', label: 'Home', icon: <AiFillHome /> },
+        { to: '/dashboard', label: 'Home', icon: <AiFillHome /> },
         { to: '/dashboard/myParcel', label: 'My Parcels', icon: <MdOutlineInventory2 /> },
         { to: '/dashboard/paymentHistory', label: 'Payment History', icon: <RiHistoryLine /> },
         { to: '/dashboard/track', label: 'Track a Package', icon: <FaSearchLocation /> },
