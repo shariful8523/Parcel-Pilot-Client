@@ -1,11 +1,9 @@
 import { useForm } from "react-hook-form";
-import Swal from 'sweetalert2';
+import Swal from "sweetalert2";
 import { useLoaderData, useNavigate } from "react-router";
 import useAuth from "../../Hooks/useAuth";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import useTrackingLogger from "../../Hooks/useTrackingLogger";
-
-
 
 const generateTrackingID = () => {
     const date = new Date();
@@ -13,8 +11,6 @@ const generateTrackingID = () => {
     const rand = Math.random().toString(36).substring(2, 7).toUpperCase();
     return `PCL-${datePart}-${rand}`;
 };
-
-
 
 const SendParcel = () => {
     const serviceCenters = useLoaderData();
@@ -26,7 +22,7 @@ const SendParcel = () => {
     const getCentersByRegion = (region) =>
         serviceCenters.filter((w) => w.region === region);
 
-    // Optional: Get covered areas for warehouse
+    // Get covered areas for warehouse
     const getCoveredAreas = (region, warehouse) => {
         const center = serviceCenters.find(
             (w) => w.region === region && w.city === warehouse
@@ -39,7 +35,6 @@ const SendParcel = () => {
         handleSubmit,
         watch,
         formState: { errors },
-
     } = useForm();
 
     const { user } = useAuth();
@@ -53,9 +48,6 @@ const SendParcel = () => {
     const senderWarehouse = watch("senderWarehouse");
     const receiverWarehouse = watch("receiverWarehouse");
 
-    // ========================
-    // On Submit Handler
-    // ========================
     const onSubmit = (data) => {
         const weight = Number(data.parcelWeight) || 0;
         const regionSame = data.senderRegion === data.receiverRegion;
@@ -80,19 +72,29 @@ const SendParcel = () => {
 
         // SweetAlert2 modal
         Swal.fire({
-            title: 'Delivery Cost Breakdown',
+            title: "Delivery Cost Breakdown",
             icon: "info",
             html: `
                 <div class="text-left text-base space-y-2">
                      <p><strong>Parcel Type:</strong> ${data.parcelType}</p>
                     <p><strong>Weight:</strong> ${weight} kg</p>
-                    <p><strong>Delivery Zone:</strong> ${regionSame ? "Within Same District" : "Outside District"}</p>
+                    <p><strong>Delivery Zone:</strong> ${regionSame ? "Within Same District" : "Outside District"
+                }</p>
                     <hr class="my-2"/>
                      <p><strong>Base Cost:</strong> ৳${baseCost}</p>
-                     ${extraCharge > 0 ? `<p><strong>Extra Charges:</strong> ৳${extraCharge}</p>` : ""}
+                     ${extraCharge > 0
+                    ? `<p><strong>Extra Charges:</strong> ৳${extraCharge}</p>`
+                    : ""
+                }
                     <hr class="my-2"/>
-                    ${data.parcelType === "Non-Document" && weight > 3 ? `<p>Non-document over 3kg</p>` : ''}
-                    ${!regionSame && data.parcelType === "Non-Document" ? `<p>+৳40 extra for outside district delivery</p>` : ''}
+                    ${data.parcelType === "Non-Document" && weight > 3
+                    ? `<p>Non-document over 3kg</p>`
+                    : ""
+                }
+                    ${!regionSame && data.parcelType === "Non-Document"
+                    ? `<p>+৳40 extra for outside district delivery</p>`
+                    : ""
+                }
                     <hr class="my-2"/>
                     <p class="text-xl font-bold text-green-600">Total Cost: ৳${totalCost}</p>
                 </div>
@@ -107,44 +109,41 @@ const SendParcel = () => {
             },
         }).then((result) => {
             if (result.isConfirmed) {
-                const tracking_id = generateTrackingID()
+                const tracking_id = generateTrackingID();
                 const parcelData = {
                     ...data,
                     deliveryCost: totalCost,
                     created_by: user.email,
-                    payment_status: 'unpaid',
-                    delivery_status: 'not_collected',
+                    payment_status: "unpaid",
+                    delivery_status: "not_collected",
                     creation_date: new Date().toISOString(),
                     tracking_id: tracking_id,
                 };
-                // console.log("📦 Parcel Saved to DB:", parcelData);
 
-                axiosSecure.post('/parcels', parcelData)
-                    .then(async (res) => {
-                        if (res.data.insertedId) {
-                            Swal.fire({
-                                title: "Redirecting...",
-                                text: "Proceeding to payment gateway.",
-                                icon: "success",
-                                timer: 1500,
-                                showConfirmButton: false,
-                            });
-                            await logTracking({
-                                tracking_id: parcelData.tracking_id,
-                                status: "Parcel_created",
-                                details: `Created by ${user.displayName}`,
-                                updated_by: user.email,
-                            });
-                            navigate('/dashboard/myParcel')
-
-                        }
-                    });        
+                axiosSecure.post("/parcels", parcelData).then(async (res) => {
+                    if (res.data.insertedId) {
+                        Swal.fire({
+                            title: "Redirecting...",
+                            text: "Proceeding to payment gateway.",
+                            icon: "success",
+                            timer: 1500,
+                            showConfirmButton: false,
+                        });
+                        await logTracking({
+                            tracking_id: parcelData.tracking_id,
+                            status: "Parcel_created",
+                            details: `Created by ${user.displayName}`,
+                            updated_by: user.email,
+                        });
+                        navigate("/dashboard/myParcel");
+                    }
+                });
             }
         });
     };
 
     return (
-        <div className="w-11/12 mx-auto bg-gray-50 -mb-28 flex justify-center py-10 px-4">
+        <div className="w-11/12 mx-auto bg-gray-50 flex justify-center py-10 px-4">
             <div className="bg-white rounded-lg shadow-md w-full max-w-6xl p-8">
                 <h1 className="text-3xl font-semibold text-gray-800 mb-6">Add Parcel</h1>
                 <p className="text-gray-600 text-2xl font-semibold mb-8">
@@ -173,7 +172,9 @@ const SendParcel = () => {
                         </label>
                     </div>
                     {errors.parcelType && (
-                        <p className="text-red-500 text-sm mb-4">Parcel type is required</p>
+                        <p className="text-red-500 text-sm mb-4">
+                            Parcel type is required
+                        </p>
                     )}
 
                     {/* Parcel Details */}
@@ -196,10 +197,16 @@ const SendParcel = () => {
                                 <label className="block text-sm font-medium mb-2">Parcel Weight (KG)</label>
                                 <input
                                     type="number"
-                                    {...register("parcelWeight")}
+                                    min="0"
+                                    {...register("parcelWeight", {
+                                        min: { value: 0, message: "Weight must be positive" },
+                                    })}
                                     className="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring focus:ring-green-200"
                                     placeholder="Parcel Weight (optional)"
                                 />
+                                {errors.parcelWeight && (
+                                    <p className="text-red-500 text-sm mt-1">{errors.parcelWeight.message}</p>
+                                )}
                             </div>
                         )}
                     </div>
@@ -257,10 +264,17 @@ const SendParcel = () => {
                                     placeholder="Address"
                                 />
                                 <input
-                                    {...register("senderContact", { required: true })}
+                                    {...register("senderContact", {
+                                        required: "Sender contact is required",
+                                        minLength: { value: 11, message: "Must be 11 digits" },
+                                        maxLength: { value: 11, message: "Must be 11 digits" },
+                                    })}
                                     className="w-full border rounded-md px-3 py-2"
                                     placeholder="Sender Contact No"
                                 />
+                                {errors.senderContact && (
+                                    <p className="text-red-500 text-sm mt-1">{errors.senderContact.message}</p>
+                                )}
                                 <textarea
                                     {...register("pickupInstruction")}
                                     className="w-full border rounded-md px-3 py-2"
@@ -321,10 +335,17 @@ const SendParcel = () => {
                                     placeholder="Receiver Address"
                                 />
                                 <input
-                                    {...register("receiverContact", { required: true })}
+                                    {...register("receiverContact", {
+                                        required: "Receiver contact is required",
+                                        minLength: { value: 11, message: "Must be 11 digits" },
+                                        maxLength: { value: 11, message: "Must be 11 digits" },
+                                    })}
                                     className="w-full border rounded-md px-3 py-2"
                                     placeholder="Receiver Contact No"
                                 />
+                                {errors.receiverContact && (
+                                    <p className="text-red-500 text-sm mt-1">{errors.receiverContact.message}</p>
+                                )}
                                 <textarea
                                     {...register("deliveryInstruction")}
                                     className="w-full border rounded-md px-3 py-2"

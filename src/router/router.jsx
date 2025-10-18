@@ -25,6 +25,7 @@ import RiderRoute from "../routes/RiderRoute";
 import CompletedDeliveries from "../Pages/Dashboard/CompletedDeliveries/CompletedDeliveries";
 import MyEarnings from "../Pages/Dashboard/MyEarnings/MyEarnings";
 import DashboardHome from "../Pages/Dashboard/DashboardHome/DashboardHome";
+import About from "../components/About";
 
 
 
@@ -56,6 +57,10 @@ const router = createBrowserRouter([
                 path: 'beArider',
                 element: <PrivateRoute><BeARider /></PrivateRoute>,
                 loader: () => fetch('./warehouses.json')
+            },
+            {
+                path:'about',
+                Component: About,
             }
         ]
     },
