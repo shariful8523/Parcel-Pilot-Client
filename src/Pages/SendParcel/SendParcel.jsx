@@ -1,9 +1,9 @@
 import { useForm } from "react-hook-form";
 import Swal from 'sweetalert2';
-import { useLoaderData } from "react-router";
+import { useLoaderData, useNavigate } from "react-router";
 import useAuth from "../../Hooks/useAuth";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
-
+import useTrackingLogger from "../../Hooks/useTrackingLogger";
 
 
 
@@ -39,11 +39,13 @@ const SendParcel = () => {
         handleSubmit,
         watch,
         formState: { errors },
-        reset,
+
     } = useForm();
 
     const { user } = useAuth();
     const axiosSecure = useAxiosSecure();
+    const navigate = useNavigate();
+    const { logTracking } = useTrackingLogger();
 
     const parcelType = watch("parcelType");
     const senderRegion = watch("senderRegion");
@@ -105,6 +107,7 @@ const SendParcel = () => {
             },
         }).then((result) => {
             if (result.isConfirmed) {
+                const tracking_id = generateTrackingID()
                 const parcelData = {
                     ...data,
                     deliveryCost: totalCost,
@@ -112,12 +115,12 @@ const SendParcel = () => {
                     payment_status: 'unpaid',
                     delivery_status: 'not_collected',
                     creation_date: new Date().toISOString(),
-                    tracking_id: generateTrackingID(),
+                    tracking_id: tracking_id,
                 };
                 // console.log("📦 Parcel Saved to DB:", parcelData);
 
                 axiosSecure.post('/parcels', parcelData)
-                    .then(res => {
+                    .then(async (res) => {
                         if (res.data.insertedId) {
                             Swal.fire({
                                 title: "Redirecting...",
@@ -126,12 +129,16 @@ const SendParcel = () => {
                                 timer: 1500,
                                 showConfirmButton: false,
                             });
-                            
+                            await logTracking({
+                                tracking_id: parcelData.tracking_id,
+                                status: "Parcel_created",
+                                details: `Created by ${user.displayName}`,
+                                updated_by: user.email,
+                            });
+                            navigate('/dashboard/myParcel')
+
                         }
-                    })
-
-
-                reset();
+                    });        
             }
         });
     };

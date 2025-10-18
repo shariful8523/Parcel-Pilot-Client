@@ -10,13 +10,18 @@ import {
 import { useState } from "react";
 import Swal from "sweetalert2";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
+import useTrackingLogger from "../../Hooks/useTrackingLogger";
+import useAuth from "../../Hooks/useAuth";
 
 const AssignRider = () => {
   const axiosSecure = useAxiosSecure();
   const [selectedParcel, setSelectedParcel] = useState(null);
+  const [selectedRider, setSelectedRider] = useState(null);
   const [riders, setRiders] = useState([]);
   const [loadingRiders, setLoadingRiders] = useState(false);
   const queryClient = useQueryClient();
+  const { logTracking } = useTrackingLogger();
+  const {user} = useAuth();
 
   //  Fetch parcels that are paid & not yet collected
   const { data: parcels = [], isLoading } = useQuery({
@@ -34,6 +39,7 @@ const AssignRider = () => {
   //  Assign Rider mutation
   const { mutateAsync: assignRider } = useMutation({
     mutationFn: async ({ parcelId, rider }) => {
+      setSelectedRider(rider);
       const res = await axiosSecure.patch(`/parcels/${parcelId}/assign`, {
         riderId: rider._id,
         riderEmail: rider.email,
@@ -41,9 +47,19 @@ const AssignRider = () => {
       });
       return res.data;
     },
-    onSuccess: () => {
+    onSuccess: async () => {
       queryClient.invalidateQueries(["assignableParcels"]);
       Swal.fire(" Success", "Rider assigned successfully!", "success");
+
+      // track rider assigned
+
+      await logTracking({
+        tracking_id: selectedParcel.tracking_id,
+        status: "rider_assigned",
+        details: `Assigned to  ${selectedRider.name}`,
+        updated_by: user.email,
+      });
+
       document.getElementById("assignModal").close();
     },
     onError: () => {
@@ -181,11 +197,10 @@ const AssignRider = () => {
               {riders.map((rider) => (
                 <div
                   key={rider._id}
-                  className={`border rounded-lg p-4 flex justify-between items-center transition ${
-                    rider.status === "rejected"
+                  className={`border rounded-lg p-4 flex justify-between items-center transition ${rider.status === "rejected"
                       ? "bg-gray-100 opacity-60 cursor-not-allowed"
                       : "hover:bg-indigo-100 cursor-pointer"
-                  }`}
+                    }`}
                   onClick={() =>
                     rider.status !== "rejected" &&
                     assignRider({ parcelId: selectedParcel._id, rider })
@@ -204,11 +219,10 @@ const AssignRider = () => {
                     </p>
                   </div>
                   <span
-                    className={`font-semibold px-3 py-1 rounded-full text-sm ${
-                      rider.status === "rejected"
+                    className={`font-semibold px-3 py-1 rounded-full text-sm ${rider.status === "rejected"
                         ? "bg-red-100 text-red-600"
                         : "bg-green-100 text-green-700"
-                    }`}
+                      }`}
                   >
                     {rider.status}
                   </span>

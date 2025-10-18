@@ -1,9 +1,11 @@
-import React from 'react';
 import useAxiosSecure from "./useAxiosSecure";
 
+
 const useTrackingLogger = () => {
+
     const axiosSecure = useAxiosSecure();
 
+   
     const logTracking = async ({ tracking_id, status, details, location, updated_by }) => {
         try {
             const payload = {

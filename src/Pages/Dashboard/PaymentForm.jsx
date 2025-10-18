@@ -5,6 +5,7 @@ import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
 import useAuth from "../../Hooks/useAuth";
 import Swal from "sweetalert2";
+import useTrackingLogger from "../../Hooks/useTrackingLogger";
 
 const PaymentForm = () => {
     const stripe = useStripe();
@@ -15,6 +16,7 @@ const PaymentForm = () => {
     const [processing, setProcessing] = useState(false);
     const { parcelId } = useParams();
     const axiosSecure = useAxiosSecure();
+    const { logTracking } = useTrackingLogger();
     const { user } = useAuth();
 
     // Fetch parcel info
@@ -112,14 +114,20 @@ const PaymentForm = () => {
                         text: "Your parcel is now marked as paid.",
                         timer: 2000,
                         showConfirmButton: false,
-                        
                         toast: true,
+                    });
+
+                    await logTracking({
+                        tracking_id: parcelInfo.tracking_id,
+                        status: "Payment_Done",
+                        details: `paid by ${user.displayName}`,
+                        updated_by: user.email,
                     });
 
                     //  Redirect to MyParcel component after 2 sec
                     setTimeout(() => {
                         navigate("/dashboard/myParcel");
-                    }, 5000);
+                    }, 2000);
                 } else {
                     setError("Payment completed but failed to record in database.");
                 }
@@ -191,6 +199,9 @@ const PaymentForm = () => {
                             >
                                 {processing ? "Processing..." : "Pay Now"}
                             </button>
+
+                            <p>Demo card for Payment</p>
+                            <h1>4242 4242 4242 4242 -- 05/30 --520 -- 78437</h1>
                         </form>
                     </div>
                 </div>
