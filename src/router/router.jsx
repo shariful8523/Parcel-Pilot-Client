@@ -20,7 +20,7 @@ import MakeAdmin from "../Pages/Dashboard/MakeAdmine/MakeAdmin";
 import Forbidden from "../Pages/Forbidden/Forbidden";
 import AdminRoute from "../routes/AdminRoute";
 import AssignRider from "../Pages/Dashboard/AssignRider";
-import Pendingdeliveries from "../Pages/Dashboard/pendingdeliveries/pendingdeliveries";
+import Pendingdeliveries from "../Pages/Dashboard/Pendingdeliveries/Pendingdeliveries";
 import RiderRoute from "../routes/RiderRoute";
 import CompletedDeliveries from "../Pages/Dashboard/CompletedDeliveries/CompletedDeliveries";
 import MyEarnings from "../Pages/Dashboard/MyEarnings/MyEarnings";
