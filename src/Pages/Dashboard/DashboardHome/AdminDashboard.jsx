@@ -1,74 +1,81 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import useAuth from "../../../Hooks/useAuth";
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  PieChart,
-  Pie,
-  Cell,
-  Legend,
-  ResponsiveContainer,
-} from "recharts";
-import {
-  FaUsers,
-  FaUserTie,
-  FaBox,
-  FaCheckCircle,
-  FaHourglassHalf,
-  FaMoneyBillWave,
-  FaMotorcycle,
-  FaUserShield,
-  FaChartLine,
-  FaTruck,
-} from "react-icons/fa";
+import { FaClock, FaUsers, FaUserTie, FaBox, FaCheckCircle, FaHourglassHalf, FaMoneyBillWave, FaMotorcycle, FaUserShield, FaChartLine, FaTruck } from "react-icons/fa";
+import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer, BarChart, Bar, CartesianGrid, XAxis, YAxis } from "recharts";
 
-const COLORS = ["#10B981", "#3B82F6", "#F59E0B", "#EF4444"];
+const COLORS = ["#F59E0B", "#3B82F6", "#10B981", "#EF4444"];
+
+const SummaryCard = ({ icon, title, value, color }) => (
+  <div
+    className={`bg-white p-4 rounded-lg shadow flex flex-col items-center justify-center text-center hover:scale-105 transition-transform border-t-4 ${
+      color === "green"
+        ? "border-green-500"
+        : color === "yellow"
+        ? "border-yellow-500"
+        : color === "blue"
+        ? "border-blue-500"
+        : color === "purple"
+        ? "border-purple-500"
+        : color === "gray"
+        ? "border-gray-500"
+        : "border-transparent"
+    }`}
+  >
+    <div className="text-3xl text-blue-500 mb-2">{icon}</div>
+    <h3 className="text-sm text-gray-500 mb-1">{title}</h3>
+    <span className="text-xl font-bold">{value}</span>
+  </div>
+);
 
 const AdminDashboard = () => {
   const axiosSecure = useAxiosSecure();
   const { user } = useAuth();
+  const [lastUpdated, setLastUpdated] = useState(new Date());
 
-  // ---------- Fetch all data (Auto Refresh Every 5s) ----------
-  const { data: users = [] } = useQuery({
+  // ---------- Fetch Data ----------
+  const { data: users = [], isLoading: usersLoading } = useQuery({
     queryKey: ["users"],
     queryFn: async () => (await axiosSecure.get("/users")).data,
-    refetchInterval: 5000,
   });
 
-  const { data: parcels = [] } = useQuery({
+  const { data: parcels = [], isLoading: parcelsLoading } = useQuery({
     queryKey: ["parcels"],
     queryFn: async () => (await axiosSecure.get("/parcels")).data,
-    refetchInterval: 5000,
   });
 
-  const { data: payments = [] } = useQuery({
+  const { data: payments = [], isLoading: paymentsLoading } = useQuery({
     queryKey: ["payments"],
     queryFn: async () => (await axiosSecure.get("/payments")).data,
-    refetchInterval: 5000,
   });
 
-  const { data: riders = [] } = useQuery({
+  const { data: riders = [], isLoading: ridersLoading } = useQuery({
     queryKey: ["riders-active"],
     queryFn: async () => (await axiosSecure.get("/riders/active")).data,
-    refetchInterval: 5000,
   });
+
+  // ---------- Auto Update Timestamp ----------
+  useEffect(() => {
+    const interval = setInterval(() => setLastUpdated(new Date()), 5000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // ---------- Loading State ----------
+  if (usersLoading || parcelsLoading || paymentsLoading || ridersLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <p className="text-gray-500 text-lg animate-pulse">Loading...</p>
+      </div>
+    );
+  }
 
   // ---------- Summary Calculations ----------
   const totalStaffs = users.filter((u) => u.role !== "user").length;
   const totalSenders = users.filter((u) => u.role === "user").length;
   const totalParcels = parcels.length;
-  const totalDelivered = parcels.filter(
-    (p) => p.delivery_status === "delivered"
-  ).length;
-  const totalPending = parcels.filter(
-    (p) => p.delivery_status !== "delivered"
-  ).length;
+  const totalDelivered = parcels.filter((p) => p.delivery_status === "delivered").length;
+  const totalPending = parcels.filter((p) => p.delivery_status !== "delivered").length;
   const totalIncome = payments.reduce((sum, p) => sum + (p.amount || 0), 0);
   const totalRiders = riders.length;
   const totalExpense = totalIncome * 0.3;
@@ -97,23 +104,23 @@ const AdminDashboard = () => {
           <FaUserShield className="text-blue-600" /> Welcome, Admin{" "}
           <span className="text-gray-700">{user?.displayName || ""}</span>
         </h1>
-        <p className="text-sm text-gray-500 animate-pulse">
-          🔄 Auto Refreshing (Every 5s)
+        <p className="text-sm text-gray-500 flex items-center gap-1">
+          <FaClock /> Last updated: {lastUpdated.toLocaleTimeString()}
         </p>
       </div>
 
       {/* Summary Cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-5 gap-4 mb-8">
-        <SummaryCard icon={<FaUserTie />} title="Total Staffs" value={totalStaffs} />
-        <SummaryCard icon={<FaUsers />} title="Total User" value={totalSenders} />
-        <SummaryCard icon={<FaBox />} title="Total Orders" value={totalParcels} />
-        <SummaryCard icon={<FaCheckCircle />} title="Delivered" value={totalDelivered} />
-        <SummaryCard icon={<FaHourglassHalf />} title="Pending" value={totalPending} />
-        <SummaryCard icon={<FaMoneyBillWave />} title="Income (BDT)" value={totalIncome.toFixed(0)} />
-        <SummaryCard icon={<FaChartLine />} title="Expense (BDT)" value={totalExpense.toFixed(0)} />
-        <SummaryCard icon={<FaMotorcycle />} title="Riders" value={totalRiders} />
-        <SummaryCard icon={<FaUserShield />} title="Dispatchers" value={totalDispatcher} />
-        <SummaryCard icon={<FaTruck />} title="Drivers" value={totalDrivers} />
+        <SummaryCard icon={<FaUserTie />} title="Total Staffs" value={totalStaffs} color="blue" />
+        <SummaryCard icon={<FaUsers />} title="Total User" value={totalSenders} color="green" />
+        <SummaryCard icon={<FaBox />} title="Total Orders" value={totalParcels} color="yellow" />
+        <SummaryCard icon={<FaCheckCircle />} title="Delivered" value={totalDelivered} color="green" />
+        <SummaryCard icon={<FaHourglassHalf />} title="Pending" value={totalPending} color="yellow" />
+        <SummaryCard icon={<FaMoneyBillWave />} title="Income (BDT)" value={totalIncome.toFixed(0)} color="blue" />
+        <SummaryCard icon={<FaChartLine />} title="Expense (BDT)" value={totalExpense.toFixed(0)} color="purple" />
+        <SummaryCard icon={<FaMotorcycle />} title="Riders" value={totalRiders} color="blue" />
+        <SummaryCard icon={<FaUserShield />} title="Dispatchers" value={totalDispatcher} color="green" />
+        <SummaryCard icon={<FaTruck />} title="Drivers" value={totalDrivers} color="gray" />
       </div>
 
       {/* Charts Section */}
@@ -150,7 +157,7 @@ const AdminDashboard = () => {
               <YAxis />
               <Tooltip />
               <Legend />
-              <Bar dataKey="amount" fill="#10B981" name="Income" />
+              <Bar dataKey="amount" fill="#9E9E9E" name="Income" />
             </BarChart>
           </ResponsiveContainer>
         </div>
@@ -187,14 +194,5 @@ const AdminDashboard = () => {
     </div>
   );
 };
-
-// ---------- Summary Card ----------
-const SummaryCard = ({ icon, title, value }) => (
-  <div className="bg-white p-4 rounded-lg shadow flex flex-col items-center justify-center text-center hover:scale-105 transition-transform">
-    <div className="text-3xl text-blue-500 mb-2">{icon}</div>
-    <h3 className="text-sm text-gray-500 mb-1">{title}</h3>
-    <span className="text-xl font-bold">{value}</span>
-  </div>
-);
 
 export default AdminDashboard;

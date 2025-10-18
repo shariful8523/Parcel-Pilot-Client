@@ -18,7 +18,7 @@ import {
   FaClock,
 } from "react-icons/fa";
 
-const COLORS = ["#10B981", "#3B82F6", "#F59E0B", "#EF4444"];
+const COLORS = ["#F59E0B", "#3B82F6", "#F59E0B", "#EF4444"];
 
 const UserDashboard = () => {
   const axiosSecure = useAxiosSecure();
@@ -80,7 +80,7 @@ const UserDashboard = () => {
     <div className="p-6 bg-gray-50 min-h-screen">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">
-          Welcome, {user?.displayName || "User"}
+         Hey {user?.displayName || "Friend"}! 🌟 Welcome back!
         </h1>
         <p className="text-sm text-gray-500 flex items-center gap-1">
           <FaClock /> Last updated: {lastUpdated.toLocaleTimeString()}
