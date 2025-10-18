@@ -23,6 +23,7 @@ import AssignRider from "../Pages/Dashboard/AssignRider";
 import Pendingdeliveries from "../Pages/Dashboard/pendingdeliveries/pendingdeliveries";
 import RiderRoute from "../routes/RiderRoute";
 import CompletedDeliveries from "../Pages/Dashboard/CompletedDeliveries/CompletedDeliveries";
+import MyEarnings from "../Pages/Dashboard/MyEarnings/MyEarnings";
 
 
 
@@ -112,6 +113,10 @@ const router = createBrowserRouter([
             {
                path:'completed-deliveries',
                element: <RiderRoute> <CompletedDeliveries/> </RiderRoute>,
+            },
+            {
+               path:'my-earnings',
+               element: <RiderRoute> <MyEarnings/> </RiderRoute>,
             },
             {
                 path: 'makeadmin',

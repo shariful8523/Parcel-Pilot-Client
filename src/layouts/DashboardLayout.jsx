@@ -3,7 +3,7 @@ import logoImg from '../assets/logo2.png';
 import { AiFillHome } from 'react-icons/ai';
 import { MdOutlineInventory2 } from 'react-icons/md';
 import { RiHistoryLine } from 'react-icons/ri';
-import { FaCheckCircle, FaClock, FaSearchLocation } from 'react-icons/fa';
+import { FaCheckCircle, FaClock, FaSearchLocation, FaWallet } from 'react-icons/fa';
 import { FaMotorcycle, FaHourglassHalf } from "react-icons/fa";
 import useUserRole from '../Hooks/useUserRole';
 import { FaUserShield } from "react-icons/fa";
@@ -29,6 +29,7 @@ const DashboardLayout = () => {
         menuItems.push(
              { to: '/dashboard/pending-deliveries', label: 'Pending Deliveries', icon: <FaClock /> },
              { to: '/dashboard/completed-deliveries', label: 'Completed Deliveries', icon: <FaCheckCircle/> },
+            { to: '/dashboard/my-earnings', label: 'My Earnings', icon: <FaWallet /> },
 
         );
     }
