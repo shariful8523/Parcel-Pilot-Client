@@ -2,26 +2,49 @@ import React, { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import useAuth from "../../../Hooks/useAuth";
-import { FaClock, FaUsers, FaUserTie, FaBox, FaCheckCircle, FaHourglassHalf, FaMoneyBillWave, FaMotorcycle, FaUserShield, FaChartLine, FaTruck } from "react-icons/fa";
-import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer, BarChart, Bar, CartesianGrid, XAxis, YAxis } from "recharts";
+import {
+  FaClock,
+  FaUsers,
+  FaUserTie,
+  FaBox,
+  FaCheckCircle,
+  FaHourglassHalf,
+  FaMoneyBillWave,
+  FaMotorcycle,
+  FaUserShield,
+  FaChartLine,
+  FaTruck,
+} from "react-icons/fa";
+import {
+  PieChart,
+  Pie,
+  Cell,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+  BarChart,
+  Bar,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+} from "recharts";
 
 const COLORS = ["#F59E0B", "#3B82F6", "#10B981", "#EF4444"];
 
 const SummaryCard = ({ icon, title, value, color }) => (
   <div
-    className={`bg-white p-4 rounded-lg shadow flex flex-col items-center justify-center text-center hover:scale-105 transition-transform border-t-4 ${
-      color === "green"
+    className={`bg-white p-4 rounded-lg shadow flex flex-col items-center justify-center text-center hover:scale-105 transition-transform border-t-4 ${color === "green"
         ? "border-green-500"
         : color === "yellow"
-        ? "border-yellow-500"
-        : color === "blue"
-        ? "border-blue-500"
-        : color === "purple"
-        ? "border-purple-500"
-        : color === "gray"
-        ? "border-gray-500"
-        : "border-transparent"
-    }`}
+          ? "border-yellow-500"
+          : color === "blue"
+            ? "border-blue-500"
+            : color === "purple"
+              ? "border-purple-500"
+              : color === "gray"
+                ? "border-gray-500"
+                : "border-transparent"
+      }`}
   >
     <div className="text-3xl text-blue-500 mb-2">{icon}</div>
     <h3 className="text-sm text-gray-500 mb-1">{title}</h3>
@@ -35,33 +58,55 @@ const AdminDashboard = () => {
   const [lastUpdated, setLastUpdated] = useState(new Date());
 
   // ---------- Fetch Data ----------
-  const { data: users = [], isLoading: usersLoading } = useQuery({
+  const {
+    data: users = [],
+    isLoading: usersLoading,
+    refetch: refetchUsers,
+  } = useQuery({
     queryKey: ["users"],
     queryFn: async () => (await axiosSecure.get("/users")).data,
   });
 
-  const { data: parcels = [], isLoading: parcelsLoading } = useQuery({
+  const {
+    data: parcels = [],
+    isLoading: parcelsLoading,
+    refetch: refetchParcels,
+  } = useQuery({
     queryKey: ["parcels"],
     queryFn: async () => (await axiosSecure.get("/parcels")).data,
   });
 
-  const { data: payments = [], isLoading: paymentsLoading } = useQuery({
+  const {
+    data: payments = [],
+    isLoading: paymentsLoading,
+    refetch: refetchPayments,
+  } = useQuery({
     queryKey: ["payments"],
     queryFn: async () => (await axiosSecure.get("/payments")).data,
   });
 
-  const { data: riders = [], isLoading: ridersLoading } = useQuery({
+  const {
+    data: riders = [],
+    isLoading: ridersLoading,
+    refetch: refetchRiders,
+  } = useQuery({
     queryKey: ["riders-active"],
     queryFn: async () => (await axiosSecure.get("/riders/active")).data,
   });
 
-  // ---------- Auto Update Timestamp ----------
+  // ---------- Auto Refresh Every 5s ----------
   useEffect(() => {
-    const interval = setInterval(() => setLastUpdated(new Date()), 5000);
+    const interval = setInterval(() => {
+      refetchUsers();
+      refetchParcels();
+      refetchPayments();
+      refetchRiders();
+      setLastUpdated(new Date());
+    }, 5000);
     return () => clearInterval(interval);
   }, []);
 
-  // ---------- Loading State ----------
+  // ---------- Loading ----------
   if (usersLoading || parcelsLoading || paymentsLoading || ridersLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -82,7 +127,6 @@ const AdminDashboard = () => {
   const totalDispatcher = riders.filter((r) => r.status === "active").length;
   const totalDrivers = totalDispatcher;
 
-  // ---------- Chart Data ----------
   const parcelStatusData = [
     { name: "Delivered", value: totalDelivered },
     { name: "Pending", value: totalPending },
@@ -99,6 +143,7 @@ const AdminDashboard = () => {
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
+      {/* Header */}
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold flex items-center gap-2">
           <FaUserShield className="text-blue-600" /> Welcome, Admin{" "}
@@ -125,6 +170,7 @@ const AdminDashboard = () => {
 
       {/* Charts Section */}
       <div className="grid md:grid-cols-2 gap-6 mb-10">
+        {/* Parcel Status */}
         <div className="bg-white rounded-lg p-5 shadow">
           <h2 className="text-lg font-semibold mb-3">Parcel Status Overview</h2>
           <ResponsiveContainer width="100%" height={250}>
@@ -148,6 +194,7 @@ const AdminDashboard = () => {
           </ResponsiveContainer>
         </div>
 
+        {/* Income Trend */}
         <div className="bg-white rounded-lg p-5 shadow">
           <h2 className="text-lg font-semibold mb-3">Income (Last 7 Payments)</h2>
           <ResponsiveContainer width="100%" height={250}>
@@ -163,7 +210,7 @@ const AdminDashboard = () => {
         </div>
       </div>
 
-      {/* Latest Payments */}
+      {/* Latest Payments Table */}
       <div className="bg-white rounded-lg shadow p-5">
         <h2 className="text-lg font-semibold mb-3">Recent Payment Statements</h2>
         <div className="overflow-x-auto">
