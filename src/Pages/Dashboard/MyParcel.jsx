@@ -6,6 +6,7 @@ import { format } from "date-fns";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router";
 import { FaTimes } from "react-icons/fa";
+import Loading from "../../components/Loading";
 
 const MyParcel = () => {
     const { user } = useAuth();
@@ -67,7 +68,7 @@ const MyParcel = () => {
     };
 
     if (isLoading)
-        return <p className="text-center mt-10 text-gray-500">Loading...</p>;
+        return <Loading/>;
 
     return (
         <div className="p-6 bg-gray-50 min-h-screen">

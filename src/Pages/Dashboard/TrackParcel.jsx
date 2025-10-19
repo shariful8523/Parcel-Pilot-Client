@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import useAuth from "../../Hooks/useAuth";
 import { FaClock, FaCheckCircle, FaTruck, FaHourglassHalf } from "react-icons/fa";
+import Loading from "../../components/Loading";
 
 const TrackParcel = () => {
     const axiosSecure = useAxiosSecure();
@@ -53,9 +54,7 @@ const TrackParcel = () => {
 
     if (isLoading)
         return (
-            <div className="flex items-center justify-center min-h-screen">
-                <p className="text-gray-500 text-lg animate-pulse">Loading parcels...</p>
-            </div>
+            <Loading/>
         );
 
     if (isError)

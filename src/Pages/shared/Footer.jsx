@@ -26,11 +26,11 @@ const Footer = () => {
 
             </aside>
 
-            <div className=''>
+            <div className=' grid grid-cols-1'>
 
                 <span className='text-[#737373] '>- - - - - - -  - - - - -  - - -  - - - - - - - - - - - - - - - - - -  - - -  -  - - -  -
                     - - - - - - - - - - - - - - - - -  - - - -  - - -  - - - - - - - - - - - - - - - - - -  - - -</span>
-                <ul className='flex gap-7 text-[#b4aaaa] text-lg'>
+                <ul className=' md:flex gap-7 text-[#b4aaaa] text-lg'>
 
                     <li>Services</li>
                     <li>Coverage</li>
@@ -42,7 +42,7 @@ const Footer = () => {
                     - - - - - - - - - - - - - - - - -  - - - -  - - -  - - - - - - - - - - - - - - - - - -  - - -</span>
             </div>
 
-            <nav>
+            <nav >
                 <div className="grid grid-flow-col gap-4">
                     <img src={linkedin} alt="" />
                     <img src={twitter} alt="" />
@@ -51,7 +51,7 @@ const Footer = () => {
                 </div>
             </nav>
 
-            <p>Copyright © {new Date().getFullYear()} - Parcel pilot - All right reserved</p>
+            <p >Copyright © {new Date().getFullYear()} - Parcel pilot - All right reserved</p>
         </footer>
     );
 };

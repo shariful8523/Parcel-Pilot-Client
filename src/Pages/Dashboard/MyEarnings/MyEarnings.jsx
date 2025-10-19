@@ -3,6 +3,7 @@ import { startOfDay, startOfWeek, startOfMonth, startOfYear, isAfter } from "dat
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import useAuth from "../../../Hooks/useAuth";
 import { FaWallet, FaMoneyBillWave, FaClock } from "react-icons/fa";
+import Loading from "../../../components/Loading";
 
 const MyEarnings = () => {
     const axiosSecure = useAxiosSecure();
@@ -60,7 +61,7 @@ const MyEarnings = () => {
             </h2>
 
             {isLoading ? (
-                <p>Loading...</p>
+                <Loading/>
             ) : (
                 <>
                     {/* === Main Earning Summary === */}

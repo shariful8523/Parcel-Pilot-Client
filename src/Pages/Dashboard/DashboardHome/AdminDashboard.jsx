@@ -28,6 +28,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import Loading from "../../../components/Loading";
 
 const COLORS = ["#F59E0B", "#3B82F6", "#10B981", "#EF4444"];
 
@@ -109,9 +110,7 @@ const AdminDashboard = () => {
   // ---------- Loading ----------
   if (usersLoading || parcelsLoading || paymentsLoading || ridersLoading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <p className="text-gray-500 text-lg animate-pulse">Loading...</p>
-      </div>
+      <Loading/>
     );
   }
 

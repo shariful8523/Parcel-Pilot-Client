@@ -10,6 +10,7 @@ import {
   FaMoneyBillWave,
   FaClipboardCheck,
 } from "react-icons/fa";
+import Loading from "../../../components/Loading";
 
 const PendingDeliveries = () => {
   const axiosSecure = useAxiosSecure();
@@ -79,9 +80,9 @@ const PendingDeliveries = () => {
       </h2>
 
       {isLoading ? (
-        <div className="text-center py-10 text-lg text-gray-500">
-          Loading parcels...
-        </div>
+        
+          <Loading/>
+        
       ) : parcels.length === 0 ? (
         <div className="text-center py-10 text-gray-500">
           No assigned deliveries yet.

@@ -1,4 +1,5 @@
 import React from "react";
+import Marquee from "react-fast-marquee";
 import Casio from "../../assets/brands/casio.png";
 import Amazon from "../../assets/brands/amazon_vector.png";
 import Moonstar from "../../assets/brands/moonstar.png";
@@ -37,20 +38,28 @@ const TrustedBy = () => {
   return (
     <section className="w-10/12 mx-auto py-16">
       <div className="w-11/12 mx-auto text-center">
-        {/* Logos */}
-        <h2 className="text-2xl mb-15 font-semibold text-gray-800">
+        {/* Title */}
+        <h2 className="text-2xl mb-8 font-semibold text-gray-800">
           We’ve helped thousands of sales teams
         </h2>
-        <div className="flex flex-wrap justify-center items-center mb-32 gap-8 mt-6">
-          {logos.map((logo, index) => (
-            <img
-              key={index}
-              src={logo}
-              alt="brand"
-              className="w-52 max-w-[120px] object-contain sm:w-40"
-            />
+
+        {/* Marquee Logos */}
+        <Marquee
+          gradient={false}
+          speed={50}
+          pauseOnHover={true}
+          className="flex items-center"
+        >
+          {logos.concat(logos).map((logo, index) => (
+            <div key={index} className="flex-shrink-0 mx-6">
+              <img
+                src={logo}
+                alt="brand"
+                className="w-32 sm:w-40 h-auto object-contain"
+              />
+            </div>
           ))}
-        </div>
+        </Marquee>
 
         <hr className="border-dashed border-t-2 border-gray-300 my-12" />
 

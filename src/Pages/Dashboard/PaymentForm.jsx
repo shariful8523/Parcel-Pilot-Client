@@ -6,6 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import useAuth from "../../Hooks/useAuth";
 import Swal from "sweetalert2";
 import useTrackingLogger from "../../Hooks/useTrackingLogger";
+import Loading from "../../components/Loading";
 
 const PaymentForm = () => {
     const stripe = useStripe();
@@ -30,7 +31,7 @@ const PaymentForm = () => {
 
     if (isLoading) {
         return (
-            <p className="text-center mt-10 text-lg font-semibold">Loading...</p>
+            <Loading/>
         );
     }
 

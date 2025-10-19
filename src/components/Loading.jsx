@@ -1,26 +1,29 @@
-// components/Loading.jsx
-import { FaTruckLoading } from "react-icons/fa";
+import React from "react";
+import Lottie from "lottie-react";
+import deliveryLoading from "../../public/Fast Delivery.json";
 
 const Loading = () => {
     return (
-        <div className="flex flex-col items-center justify-center min-h-[80vh] bg-base-100 text-center px-4">
-            {/* Animated truck icon */}
-            <div className="animate-bounce text-primary text-6xl mb-4">
-                <FaTruckLoading />
+        <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-white to-lime-50">
+            {/* Animation */}
+            <Lottie
+                animationData={deliveryLoading}
+                loop={true}
+                className="w-32 h-32"
+            />
+
+            {/* Text */}
+            <div className="text-center mt-4">
+                <h2 className="text-2xl font-bold text-gray-700 tracking-wide">
+                    Delivering your parcel...
+                </h2>
+                <p className="text-lime-600 font-medium mt-2 animate-pulse">
+                    Please wait a moment 🚀
+                </p>
             </div>
 
-            {/* Main message */}
-            <h2 className="text-2xl font-semibold text-gray-700 dark:text-gray-200">
-                Hang tight! We're loading your parcels...
-            </h2>
-
-            {/* Sub message */}
-            <p className="text-sm text-gray-500 dark:text-gray-400 max-w-md mt-2">
-                Our system is carefully processing your delivery information.
-            </p>
-
-            {/* DaisyUI spinner for extra visual feedback */}
-            <span className="loading loading-spinner loading-lg text-primary mt-6"></span>
+            {/* Little line animation */}
+            <div className="mt-6 w-40 h-1 bg-lime-400 rounded-full animate-pulse"></div>
         </div>
     );
 };

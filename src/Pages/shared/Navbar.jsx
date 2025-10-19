@@ -1,16 +1,18 @@
 import React, { useState } from "react";
 import useAuth from "../../Hooks/useAuth";
-import {  useNavigate, Link, NavLink } from "react-router";
+import { useNavigate, Link, NavLink } from "react-router";
 import { IoMdArrowForward } from "react-icons/io";
 import { FaUserCircle } from "react-icons/fa";
 import Swal from "sweetalert2";
 import logo from "../../assets/logo2.png";
+import useUserRole from "../../Hooks/useUserRole";
 
 
 const Navbar = () => {
     const { user, logOut } = useAuth();
     const [openMenu, setOpenMenu] = useState(false);
     const navigate = useNavigate();
+    const { role, roleLoading } = useUserRole();
 
     // Logout Handler
     const handleLogout = () => {
@@ -46,7 +48,7 @@ const Navbar = () => {
         <>
             <li><NavLink to="/">Home</NavLink></li>
             <li><NavLink to="/coverage">Coverage</NavLink></li>
-            <li><NavLink to="/sendparcel">Send A Parcel</NavLink></li>
+            {!roleLoading && role === 'user' && <li><NavLink to="/sendparcel">Send A Parcel</NavLink></li>}
             {user && <li><NavLink to="/dashboard">Dashboard</NavLink></li>}
             <li><NavLink to="/about">About Us</NavLink></li>
         </>

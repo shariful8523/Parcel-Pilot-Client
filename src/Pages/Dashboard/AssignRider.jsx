@@ -12,6 +12,7 @@ import Swal from "sweetalert2";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import useTrackingLogger from "../../Hooks/useTrackingLogger";
 import useAuth from "../../Hooks/useAuth";
+import Loading from "../../components/Loading";
 
 const AssignRider = () => {
   const axiosSecure = useAxiosSecure();
@@ -88,7 +89,7 @@ const AssignRider = () => {
   };
 
   if (isLoading)
-    return <p className="text-center py-10 text-gray-600">Loading parcels...</p>;
+    return <Loading/>;
 
   return (
     <div className="p-6">
