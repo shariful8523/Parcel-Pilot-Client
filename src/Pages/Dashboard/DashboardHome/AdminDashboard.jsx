@@ -29,6 +29,7 @@ import {
   YAxis,
 } from "recharts";
 import Loading from "../../../components/Loading";
+import { Title } from "react-head";
 
 const COLORS = ["#F59E0B", "#3B82F6", "#10B981", "#EF4444"];
 
@@ -141,6 +142,8 @@ const AdminDashboard = () => {
     .slice(0, 5);
 
   return (
+    <>
+    <Title> Parcel Pilot || Admin Dashboard </Title>
     <div className="p-6 bg-gray-50 min-h-screen">
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
@@ -238,6 +241,8 @@ const AdminDashboard = () => {
         </div>
       </div>
     </div>
+    </>
+    
   );
 };
 

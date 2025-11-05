@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import { FaSearch, FaUserSlash } from "react-icons/fa";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
+import { Title } from "react-head";
 
 
 const ActiveRiders = () => {
@@ -48,7 +49,12 @@ const ActiveRiders = () => {
   if (isLoading) return <p>Loading active riders...</p>;
 
   return (
-    <div className="p-6">
+
+    <> 
+
+    <Title> Parcel Pilot || Active Rider </Title>
+    
+     <div className="p-6">
       <h2 className="text-2xl font-bold mb-4 text-gray-800">Active Riders</h2>
 
       <div className="mb-4 flex items-center gap-2">
@@ -135,7 +141,9 @@ const ActiveRiders = () => {
           )}
         </div>
       </div>
-    </div>
+    </div>  </>
+
+   
   );
 };
 

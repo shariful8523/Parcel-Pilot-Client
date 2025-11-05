@@ -6,19 +6,25 @@ import TrustedBy from '../Banner/TrustedBy'
 import MerchantBanner from '../Banner/MerchantBanner';
 import Testimonial from '../Banner/Testimonial';
 import FAQSection from '../Banner/FAQSection';
+import { HeadProvider, Title  } from 'react-head';
 
 
 const Home = () => {
-    return (
-        <div>
-            <Banner />
-            <Worksection />
-            <Services />
-            <TrustedBy />
-            <MerchantBanner />
-            <Testimonial/>
-            <FAQSection/>
-        </div>
+
+   
+   return (
+        <HeadProvider>
+            <Title>Parcel Pilot || Home</Title>
+            <div>
+                <Banner />
+                <Worksection />
+                <Services />
+                <TrustedBy />
+                <MerchantBanner />
+                <Testimonial />
+                <FAQSection />
+            </div>
+        </HeadProvider>
     );
 };
 

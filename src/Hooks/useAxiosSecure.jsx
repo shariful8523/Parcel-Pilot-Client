@@ -7,7 +7,7 @@ const useAxiosSecure = () => {
   const navigate = useNavigate();
 
   const axiosSecure = axios.create({
-    baseURL: "https://parcel-pilot-server-mu.vercel.app/",
+    baseURL: "https://parcel-pilot-server-mu.vercel.app",
   });
 
   // Request interceptor

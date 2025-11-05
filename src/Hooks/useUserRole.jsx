@@ -10,13 +10,13 @@ const useUserRole = () => {
     queryKey: ["userRole", user?.email],
     enabled: !authLoading && !!user?.email,
     queryFn: async () => {
-      const encodedEmail = encodeURIComponent(user.email); // <-- encode email
+      const encodedEmail = encodeURIComponent(user.email);
       const res = await axiosSecure.get(`/users/${encodedEmail}/role`);
       return res.data.role;
     },
   });
 
-  return { role, roleLoading: authLoading || roleLoading, refetch };
+  return { role, roleLoading: authLoading || roleLoading, refetchUserRole: refetch };
 };
 
 export default useUserRole;

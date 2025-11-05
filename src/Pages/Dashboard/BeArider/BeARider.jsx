@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import { useLoaderData } from "react-router";
 import Swal from "sweetalert2";
+import { Title } from "react-head";
 
 const BeARider = () => {
     const { user } = useAuth();
@@ -77,6 +78,9 @@ const BeARider = () => {
     };
 
     return (
+
+        <>
+        <Title> Parcel Pilot || Be A Rider </Title>
         <div className="w-11/12 max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between p-10 bg-gray-50 rounded-2xl shadow-sm">
             <div className="flex-1 w-full lg:max-w-lg">
                 <h2 className="text-3xl font-bold text-gray-900 mb-2">Be a Rider</h2>
@@ -213,6 +217,8 @@ const BeARider = () => {
                 <img src={riderImage} alt="Rider" className="max-w-md w-full" />
             </div>
         </div>
+        </>
+        
     );
 };
 

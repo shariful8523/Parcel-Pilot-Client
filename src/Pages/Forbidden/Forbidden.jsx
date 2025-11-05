@@ -1,11 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router';
 import { MdBlock, MdOutlineHome } from 'react-icons/md';
+import { Title } from 'react-head';
 
 
 
 export default function ForbiddenPage({ title = '403 — Forbidden', message = "You don't have permission to access this page." }) {
     return (
+        <>
+             <Title>Parcel Pilot || Forbidden</Title>
+        
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 p-6">
             <main className="max-w-4xl w-full bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-2xl rounded-2xl overflow-hidden">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
@@ -81,5 +85,6 @@ export default function ForbiddenPage({ title = '403 — Forbidden', message = "
                 </div>
             </main>
         </div>
+        </>
     );
 }

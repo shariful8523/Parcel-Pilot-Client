@@ -17,6 +17,7 @@ import {
     FaTruck,
     FaClock,
 } from "react-icons/fa";
+import { Title } from "react-head";
 
 const COLORS = ["#F59E0B", "#3B82F6", "#10B981"]; // Yellow, Blue, Green
 
@@ -80,7 +81,11 @@ const RiderDashboard = () => {
     };
 
     return (
-        <div className="p-6 bg-gray-50 min-h-screen">
+
+        <>
+
+        <Title> Parcel Pilot || Rider Dashboard </Title>
+         <div className="p-6 bg-gray-50 min-h-screen">
             <div className="flex justify-between items-center mb-6">
                 <h1 className="text-2xl font-bold">
                     🚴‍♂️ Welcome, {user?.displayName ? user.displayName : "Champion Rider"}! Ready for today's ride? Let's go! 🌟
@@ -167,6 +172,8 @@ const RiderDashboard = () => {
                 </div>
             </div>
         </div>
+        </>
+       
     );
 };
 

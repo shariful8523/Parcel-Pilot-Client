@@ -7,6 +7,7 @@ import useAuth from "../../Hooks/useAuth";
 import Swal from "sweetalert2";
 import useTrackingLogger from "../../Hooks/useTrackingLogger";
 import Loading from "../../components/Loading";
+import { Title } from "react-head";
 
 const PaymentForm = () => {
     const stripe = useStripe();
@@ -31,7 +32,7 @@ const PaymentForm = () => {
 
     if (isLoading) {
         return (
-            <Loading/>
+            <Loading />
         );
     }
 
@@ -142,72 +143,77 @@ const PaymentForm = () => {
     };
 
     return (
-        <section className="bg-white py-8 antialiased dark:bg-gray-900 md:py-16">
-            <div className="mx-auto max-w-screen-xl px-4 2xl:px-0">
-                <div className="mx-auto max-w-5xl">
-                    <h2 className="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl mb-6">
-                        Payment for {parcelInfo?.parcelType || "Parcel"}
-                    </h2>
+        <>
 
-                    <div className="lg:flex lg:items-start lg:gap-12">
-                        <form
-                            onSubmit={handleSubmit}
-                            className="w-full rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800 sm:p-6 lg:max-w-xl lg:p-8 space-y-4"
-                        >
-                            <label className="block text-sm font-medium text-gray-900 dark:text-white">
-                                Name on Card*
-                            </label>
-                            <input
-                                type="text"
-                                name="full_name"
-                                placeholder="John Doe"
-                                required
-                                className="w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
-                            />
+            <Title> Parcel Pilot || Payment Form </Title>
+            <section className="bg-white py-8 antialiased dark:bg-gray-900 md:py-16">
+                <div className="mx-auto max-w-screen-xl px-4 2xl:px-0">
+                    <div className="mx-auto max-w-5xl">
+                        <h2 className="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl mb-6">
+                            Payment for {parcelInfo?.parcelType || "Parcel"}
+                        </h2>
 
-                            <label className="block text-sm font-medium text-gray-900 dark:text-white">
-                                Card Details*
-                            </label>
-                            <div className="p-4 border border-gray-300 rounded-lg bg-gray-50 dark:border-gray-600 dark:bg-gray-700">
-                                <CardElement
-                                    options={{
-                                        style: {
-                                            base: {
-                                                fontSize: "16px",
-                                                color: "#1f2937",
-                                                "::placeholder": { color: "#9ca3af" },
-                                            },
-                                            invalid: { color: "#e53e3e" },
-                                        },
-                                    }}
-                                />
-                            </div>
-
-                            <input
-                                type="text"
-                                value={`৳ ${amount}`}
-                                disabled
-                                className="w-full rounded-lg border border-gray-300 bg-gray-100 p-2.5 text-sm text-gray-900 cursor-not-allowed dark:border-gray-600 dark:bg-gray-700 dark:text-white"
-                            />
-
-                            {error && <p className="text-red-500 text-sm">{error}</p>}
-                            {success && <p className="text-green-500 text-sm">{success}</p>}
-
-                            <button
-                                type="submit"
-                                disabled={!stripe || processing}
-                                className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-lg transition duration-300"
+                        <div className="lg:flex lg:items-start lg:gap-12">
+                            <form
+                                onSubmit={handleSubmit}
+                                className="w-full rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800 sm:p-6 lg:max-w-xl lg:p-8 space-y-4"
                             >
-                                {processing ? "Processing..." : "Pay Now"}
-                            </button>
+                                <label className="block text-sm font-medium text-gray-900 dark:text-white">
+                                    Name on Card*
+                                </label>
+                                <input
+                                    type="text"
+                                    name="full_name"
+                                    placeholder="John Doe"
+                                    required
+                                    className="w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                                />
 
-                            <p>Demo card for Payment</p>
-                            <h1>4242 4242 4242 4242 -- 05/30 --520 -- 78437</h1>
-                        </form>
+                                <label className="block text-sm font-medium text-gray-900 dark:text-white">
+                                    Card Details*
+                                </label>
+                                <div className="p-4 border border-gray-300 rounded-lg bg-gray-50 dark:border-gray-600 dark:bg-gray-700">
+                                    <CardElement
+                                        options={{
+                                            style: {
+                                                base: {
+                                                    fontSize: "16px",
+                                                    color: "#1f2937",
+                                                    "::placeholder": { color: "#9ca3af" },
+                                                },
+                                                invalid: { color: "#e53e3e" },
+                                            },
+                                        }}
+                                    />
+                                </div>
+
+                                <input
+                                    type="text"
+                                    value={`৳ ${amount}`}
+                                    disabled
+                                    className="w-full rounded-lg border border-gray-300 bg-gray-100 p-2.5 text-sm text-gray-900 cursor-not-allowed dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                                />
+
+                                {error && <p className="text-red-500 text-sm">{error}</p>}
+                                {success && <p className="text-green-500 text-sm">{success}</p>}
+
+                                <button
+                                    type="submit"
+                                    disabled={!stripe || processing}
+                                    className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-lg transition duration-300"
+                                >
+                                    {processing ? "Processing..." : "Pay Now"}
+                                </button>
+
+                                <p>Demo card for Payment</p>
+                                <h1>4242 4242 4242 4242 -- 05/30 --520 -- 78437</h1>
+                            </form>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
+        </>
+
     );
 };
 

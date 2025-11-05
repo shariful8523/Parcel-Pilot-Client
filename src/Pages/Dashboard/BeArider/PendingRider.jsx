@@ -3,6 +3,7 @@ import Swal from "sweetalert2";
 import { FaEye } from "react-icons/fa";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
+import { Title } from "react-head";
 
 const PendingRiders = () => {
     const [selectedRider, setSelectedRider] = useState(null);
@@ -48,7 +49,9 @@ const PendingRiders = () => {
     };
 
     return (
-        <div className="p-6">
+        <>
+        <Title> Parcel Pilot || Pending Rider </Title>
+         <div className="p-6">
             <h2 className="text-2xl font-bold mb-6 text-gray-800">Pending Riders</h2>
 
             <div className="overflow-x-auto border rounded-lg shadow-lg">
@@ -132,6 +135,8 @@ const PendingRiders = () => {
                 </div>
             </div>
         </div>
+        </>
+       
     );
 };
 

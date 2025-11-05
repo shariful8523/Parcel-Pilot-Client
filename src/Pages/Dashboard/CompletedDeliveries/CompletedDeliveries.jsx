@@ -3,6 +3,7 @@ import Swal from "sweetalert2";
 import { FaUser, FaMapMarkerAlt, FaPhoneAlt, FaBox, FaTruck, FaClock, FaMoneyBillWave } from "react-icons/fa";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import useAuth from "../../../Hooks/useAuth";
+import { Title } from "react-head";
 
 const CompletedDeliveries = () => {
   const axiosSecure = useAxiosSecure();
@@ -56,7 +57,10 @@ const CompletedDeliveries = () => {
   };
 
   return (
-    <div className="p-6 space-y-6">
+
+    <>
+    <Title> Parcel Pilot || Completed Deliveries </Title>
+     <div className="p-6 space-y-6">
       <h2 className="text-3xl font-bold text-gray-800 mb-4">✅ Completed Deliveries</h2>
 
       {isLoading ? (
@@ -128,6 +132,8 @@ const CompletedDeliveries = () => {
         </div>
       )}
     </div>
+    </>
+   
   );
 };
 

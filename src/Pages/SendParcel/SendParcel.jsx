@@ -4,6 +4,7 @@ import { useLoaderData, useNavigate } from "react-router";
 import useAuth from "../../Hooks/useAuth";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import useTrackingLogger from "../../Hooks/useTrackingLogger";
+import { Title } from "react-head";
 
 const generateTrackingID = () => {
     const date = new Date();
@@ -143,232 +144,239 @@ const SendParcel = () => {
     };
 
     return (
-        <div className="w-11/12 mx-auto bg-gray-50 flex justify-center py-10 px-4">
-            <div className="bg-white rounded-lg shadow-md w-full max-w-6xl p-8">
-                <h1 className="text-3xl font-semibold text-gray-800 mb-6">Add Parcel</h1>
-                <p className="text-gray-600 text-2xl font-semibold mb-8">
-                    Enter your parcel details
-                </p>
 
-                <form onSubmit={handleSubmit(onSubmit)}>
-                    {/* Parcel Type */}
-                    <div className="flex flex-wrap items-center gap-6 mb-6">
-                        <label className="flex items-center gap-2">
-                            <input
-                                type="radio"
-                                value="Document"
-                                {...register("parcelType", { required: true })}
-                                defaultChecked
-                            />
-                            <span>Document</span>
-                        </label>
-                        <label className="flex items-center gap-2">
-                            <input
-                                type="radio"
-                                value="Non-Document"
-                                {...register("parcelType", { required: true })}
-                            />
-                            <span>Non-Document</span>
-                        </label>
-                    </div>
-                    {errors.parcelType && (
-                        <p className="text-red-500 text-sm mb-4">
-                            Parcel type is required
-                        </p>
-                    )}
+        <>
 
-                    {/* Parcel Details */}
-                    <div className="grid md:grid-cols-2 gap-6 mb-10">
-                        <div>
-                            <label className="block text-sm font-medium mb-2">Parcel Name</label>
-                            <input
-                                type="text"
-                                {...register("parcelName", { required: true })}
-                                className="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring focus:ring-green-200"
-                                placeholder="Parcel Name"
-                            />
-                            {errors.parcelName && (
-                                <p className="text-red-500 text-sm mt-1">Parcel name is required</p>
+            <Title> Parcel Pilot || Send Parcel </Title>
+            <div className="w-11/12 mx-auto bg-gray-50 flex justify-center py-10 px-4">
+                <div className="bg-white rounded-lg shadow-md w-full max-w-6xl p-8">
+                    <h1 className="text-3xl font-semibold text-gray-800 mb-6">Add Parcel</h1>
+                    <p className="text-gray-600 text-2xl font-semibold mb-8">
+                        Enter your parcel details
+                    </p>
+
+                    <form onSubmit={handleSubmit(onSubmit)}>
+                        {/* Parcel Type */}
+                        <div className="flex flex-wrap items-center gap-6 mb-6">
+                            <label className="flex items-center gap-2">
+                                <input
+                                    type="radio"
+                                    value="Document"
+                                    {...register("parcelType", { required: true })}
+                                    defaultChecked
+                                />
+                                <span>Document</span>
+                            </label>
+                            <label className="flex items-center gap-2">
+                                <input
+                                    type="radio"
+                                    value="Non-Document"
+                                    {...register("parcelType", { required: true })}
+                                />
+                                <span>Non-Document</span>
+                            </label>
+                        </div>
+                        {errors.parcelType && (
+                            <p className="text-red-500 text-sm mb-4">
+                                Parcel type is required
+                            </p>
+                        )}
+
+                        {/* Parcel Details */}
+                        <div className="grid md:grid-cols-2 gap-6 mb-10">
+                            <div>
+                                <label className="block text-sm font-medium mb-2">Parcel Name</label>
+                                <input
+                                    type="text"
+                                    {...register("parcelName", { required: true })}
+                                    className="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring focus:ring-green-200"
+                                    placeholder="Parcel Name"
+                                />
+                                {errors.parcelName && (
+                                    <p className="text-red-500 text-sm mt-1">Parcel name is required</p>
+                                )}
+                            </div>
+
+                            {parcelType === "Non-Document" && (
+                                <div>
+                                    <label className="block text-sm font-medium mb-2">Parcel Weight (KG)</label>
+                                    <input
+                                        type="number"
+                                        min="0"
+                                        {...register("parcelWeight", {
+                                            min: { value: 0, message: "Weight must be positive" },
+                                        })}
+                                        className="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring focus:ring-green-200"
+                                        placeholder="Parcel Weight (optional)"
+                                    />
+                                    {errors.parcelWeight && (
+                                        <p className="text-red-500 text-sm mt-1">{errors.parcelWeight.message}</p>
+                                    )}
+                                </div>
                             )}
                         </div>
 
-                        {parcelType === "Non-Document" && (
+                        {/* Sender & Receiver Details */}
+                        <div className="grid md:grid-cols-2 gap-10 mb-8">
+                            {/* Sender */}
                             <div>
-                                <label className="block text-sm font-medium mb-2">Parcel Weight (KG)</label>
-                                <input
-                                    type="number"
-                                    min="0"
-                                    {...register("parcelWeight", {
-                                        min: { value: 0, message: "Weight must be positive" },
-                                    })}
-                                    className="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring focus:ring-green-200"
-                                    placeholder="Parcel Weight (optional)"
-                                />
-                                {errors.parcelWeight && (
-                                    <p className="text-red-500 text-sm mt-1">{errors.parcelWeight.message}</p>
-                                )}
-                            </div>
-                        )}
-                    </div>
-
-                    {/* Sender & Receiver Details */}
-                    <div className="grid md:grid-cols-2 gap-10 mb-8">
-                        {/* Sender */}
-                        <div>
-                            <h2 className="text-lg font-semibold mb-4">Sender Details</h2>
-                            <div className="space-y-4">
-                                <input
-                                    {...register("senderName", { required: true })}
-                                    className="w-full border rounded-md px-3 py-2"
-                                    placeholder="Sender Name"
-                                />
-                                <select
-                                    {...register("senderRegion", { required: true })}
-                                    className="w-full border rounded-md px-3 py-2"
-                                >
-                                    <option value="">Select Region</option>
-                                    {uniqRegions.map((r) => (
-                                        <option key={r} value={r}>
-                                            {r}
-                                        </option>
-                                    ))}
-                                </select>
-                                <select
-                                    {...register("senderWarehouse", { required: true })}
-                                    className="w-full border rounded-md px-3 py-2"
-                                >
-                                    <option value="">Select Warehouse</option>
-                                    {senderRegion &&
-                                        getCentersByRegion(senderRegion).map((w) => (
-                                            <option key={w.city} value={w.city}>
-                                                {w.city}
-                                            </option>
-                                        ))}
-                                </select>
-                                {senderWarehouse && (
+                                <h2 className="text-lg font-semibold mb-4">Sender Details</h2>
+                                <div className="space-y-4">
+                                    <input
+                                        {...register("senderName", { required: true })}
+                                        className="w-full border rounded-md px-3 py-2"
+                                        placeholder="Sender Name"
+                                    />
                                     <select
-                                        {...register("senderCoveredArea")}
+                                        {...register("senderRegion", { required: true })}
                                         className="w-full border rounded-md px-3 py-2"
                                     >
-                                        <option value="">Select Covered Area</option>
-                                        {getCoveredAreas(senderRegion, senderWarehouse).map((area) => (
-                                            <option key={area} value={area}>
-                                                {area}
+                                        <option value="">Select Region</option>
+                                        {uniqRegions.map((r) => (
+                                            <option key={r} value={r}>
+                                                {r}
                                             </option>
                                         ))}
                                     </select>
-                                )}
-                                <input
-                                    {...register("senderAddress", { required: true })}
-                                    className="w-full border rounded-md px-3 py-2"
-                                    placeholder="Address"
-                                />
-                                <input
-                                    {...register("senderContact", {
-                                        required: "Sender contact is required",
-                                        minLength: { value: 11, message: "Must be 11 digits" },
-                                        maxLength: { value: 11, message: "Must be 11 digits" },
-                                    })}
-                                    className="w-full border rounded-md px-3 py-2"
-                                    placeholder="Sender Contact No"
-                                />
-                                {errors.senderContact && (
-                                    <p className="text-red-500 text-sm mt-1">{errors.senderContact.message}</p>
-                                )}
-                                <textarea
-                                    {...register("pickupInstruction")}
-                                    className="w-full border rounded-md px-3 py-2"
-                                    rows="2"
-                                    placeholder="Pickup Instruction"
-                                />
-                            </div>
-                        </div>
-
-                        {/* Receiver */}
-                        <div>
-                            <h2 className="text-lg font-semibold mb-4">Receiver Details</h2>
-                            <div className="space-y-4">
-                                <input
-                                    {...register("receiverName", { required: true })}
-                                    className="w-full border rounded-md px-3 py-2"
-                                    placeholder="Receiver Name"
-                                />
-                                <select
-                                    {...register("receiverRegion", { required: true })}
-                                    className="w-full border rounded-md px-3 py-2"
-                                >
-                                    <option value="">Select Region</option>
-                                    {uniqRegions.map((r) => (
-                                        <option key={r} value={r}>
-                                            {r}
-                                        </option>
-                                    ))}
-                                </select>
-                                <select
-                                    {...register("receiverWarehouse", { required: true })}
-                                    className="w-full border rounded-md px-3 py-2"
-                                >
-                                    <option value="">Select Warehouse</option>
-                                    {receiverRegion &&
-                                        getCentersByRegion(receiverRegion).map((w) => (
-                                            <option key={w.city} value={w.city}>
-                                                {w.city}
-                                            </option>
-                                        ))}
-                                </select>
-                                {receiverWarehouse && (
                                     <select
-                                        {...register("receiverCoveredArea")}
+                                        {...register("senderWarehouse", { required: true })}
                                         className="w-full border rounded-md px-3 py-2"
                                     >
-                                        <option value="">Select Covered Area</option>
-                                        {getCoveredAreas(receiverRegion, receiverWarehouse).map((area) => (
-                                            <option key={area} value={area}>
-                                                {area}
+                                        <option value="">Select Warehouse</option>
+                                        {senderRegion &&
+                                            getCentersByRegion(senderRegion).map((w) => (
+                                                <option key={w.city} value={w.city}>
+                                                    {w.city}
+                                                </option>
+                                            ))}
+                                    </select>
+                                    {senderWarehouse && (
+                                        <select
+                                            {...register("senderCoveredArea")}
+                                            className="w-full border rounded-md px-3 py-2"
+                                        >
+                                            <option value="">Select Covered Area</option>
+                                            {getCoveredAreas(senderRegion, senderWarehouse).map((area) => (
+                                                <option key={area} value={area}>
+                                                    {area}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    )}
+                                    <input
+                                        {...register("senderAddress", { required: true })}
+                                        className="w-full border rounded-md px-3 py-2"
+                                        placeholder="Address"
+                                    />
+                                    <input
+                                        {...register("senderContact", {
+                                            required: "Sender contact is required",
+                                            minLength: { value: 11, message: "Must be 11 digits" },
+                                            maxLength: { value: 11, message: "Must be 11 digits" },
+                                        })}
+                                        className="w-full border rounded-md px-3 py-2"
+                                        placeholder="Sender Contact No"
+                                    />
+                                    {errors.senderContact && (
+                                        <p className="text-red-500 text-sm mt-1">{errors.senderContact.message}</p>
+                                    )}
+                                    <textarea
+                                        {...register("pickupInstruction")}
+                                        className="w-full border rounded-md px-3 py-2"
+                                        rows="2"
+                                        placeholder="Pickup Instruction"
+                                    />
+                                </div>
+                            </div>
+
+                            {/* Receiver */}
+                            <div>
+                                <h2 className="text-lg font-semibold mb-4">Receiver Details</h2>
+                                <div className="space-y-4">
+                                    <input
+                                        {...register("receiverName", { required: true })}
+                                        className="w-full border rounded-md px-3 py-2"
+                                        placeholder="Receiver Name"
+                                    />
+                                    <select
+                                        {...register("receiverRegion", { required: true })}
+                                        className="w-full border rounded-md px-3 py-2"
+                                    >
+                                        <option value="">Select Region</option>
+                                        {uniqRegions.map((r) => (
+                                            <option key={r} value={r}>
+                                                {r}
                                             </option>
                                         ))}
                                     </select>
-                                )}
-                                <input
-                                    {...register("receiverAddress", { required: true })}
-                                    className="w-full border rounded-md px-3 py-2"
-                                    placeholder="Receiver Address"
-                                />
-                                <input
-                                    {...register("receiverContact", {
-                                        required: "Receiver contact is required",
-                                        minLength: { value: 11, message: "Must be 11 digits" },
-                                        maxLength: { value: 11, message: "Must be 11 digits" },
-                                    })}
-                                    className="w-full border rounded-md px-3 py-2"
-                                    placeholder="Receiver Contact No"
-                                />
-                                {errors.receiverContact && (
-                                    <p className="text-red-500 text-sm mt-1">{errors.receiverContact.message}</p>
-                                )}
-                                <textarea
-                                    {...register("deliveryInstruction")}
-                                    className="w-full border rounded-md px-3 py-2"
-                                    rows="2"
-                                    placeholder="Delivery Instruction"
-                                />
+                                    <select
+                                        {...register("receiverWarehouse", { required: true })}
+                                        className="w-full border rounded-md px-3 py-2"
+                                    >
+                                        <option value="">Select Warehouse</option>
+                                        {receiverRegion &&
+                                            getCentersByRegion(receiverRegion).map((w) => (
+                                                <option key={w.city} value={w.city}>
+                                                    {w.city}
+                                                </option>
+                                            ))}
+                                    </select>
+                                    {receiverWarehouse && (
+                                        <select
+                                            {...register("receiverCoveredArea")}
+                                            className="w-full border rounded-md px-3 py-2"
+                                        >
+                                            <option value="">Select Covered Area</option>
+                                            {getCoveredAreas(receiverRegion, receiverWarehouse).map((area) => (
+                                                <option key={area} value={area}>
+                                                    {area}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    )}
+                                    <input
+                                        {...register("receiverAddress", { required: true })}
+                                        className="w-full border rounded-md px-3 py-2"
+                                        placeholder="Receiver Address"
+                                    />
+                                    <input
+                                        {...register("receiverContact", {
+                                            required: "Receiver contact is required",
+                                            minLength: { value: 11, message: "Must be 11 digits" },
+                                            maxLength: { value: 11, message: "Must be 11 digits" },
+                                        })}
+                                        className="w-full border rounded-md px-3 py-2"
+                                        placeholder="Receiver Contact No"
+                                    />
+                                    {errors.receiverContact && (
+                                        <p className="text-red-500 text-sm mt-1">{errors.receiverContact.message}</p>
+                                    )}
+                                    <textarea
+                                        {...register("deliveryInstruction")}
+                                        className="w-full border rounded-md px-3 py-2"
+                                        rows="2"
+                                        placeholder="Delivery Instruction"
+                                    />
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <p className="text-sm text-gray-500 mb-6">* Pickup Time 4pm–7pm Approx.</p>
+                        <p className="text-sm text-gray-500 mb-6">* Pickup Time 1 Hour Approx.</p>
 
-                    <div>
-                        <button
-                            type="submit"
-                            className="bg-[#b0e611] text-white font-medium px-6 py-2 rounded hover:bg-green-600"
-                        >
-                            Proceed to Confirm Booking
-                        </button>
-                    </div>
-                </form>
+                        <div>
+                            <button
+                                type="submit"
+                                className="bg-[#b0e611] text-white font-medium px-6 py-2 rounded hover:bg-green-600"
+                            >
+                                Proceed to Confirm Booking
+                            </button>
+
+                        </div>
+                    </form>
+                </div>
             </div>
-        </div>
+        </>
+
     );
 };
 
