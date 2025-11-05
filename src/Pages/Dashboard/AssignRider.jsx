@@ -1,4 +1,4 @@
-// 🚀 Modified AssignRider.jsx
+
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
@@ -27,7 +27,7 @@ const AssignRider = () => {
   const { logTracking } = useTrackingLogger();
   const { user } = useAuth();
 
-  // ✅ Fetch all parcels (regardless of payment) that are not yet assigned
+  //  Fetch all parcels (regardless of payment) that are not yet assigned
   const { data: parcels = [], isLoading } = useQuery({
     queryKey: ["allParcelsForAssignment"],
     queryFn: async () => {
@@ -38,7 +38,7 @@ const AssignRider = () => {
     },
   });
 
-  // ✅ Assign Rider mutation
+  //  Assign Rider mutation
   const { mutateAsync: assignRider } = useMutation({
     mutationFn: async ({ parcelId, rider }) => {
       setSelectedRider(rider);
@@ -67,7 +67,7 @@ const AssignRider = () => {
     },
   });
 
-  // ✅ Open modal and load only ACTIVE riders
+  //  Open modal and load only ACTIVE riders
   const openAssignModal = async (parcel) => {
     setSelectedParcel(parcel);
     setLoadingRiders(true);
@@ -109,7 +109,7 @@ const AssignRider = () => {
           <FaMotorcycle /> Assign Rider
         </h2>
 
-        {/* ✅ Parcels Table */}
+        {/*  Parcels Table */}
         <div className="overflow-x-auto bg-white shadow-md rounded-lg">
           <table className="table w-full text-left">
             <thead className="bg-indigo-600 text-white">
