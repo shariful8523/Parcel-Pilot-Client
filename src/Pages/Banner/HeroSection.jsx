@@ -1,9 +1,48 @@
 import React from 'react';
 import { Package, MapPin, CheckCircle, TrendingUp, Clock, Truck } from 'lucide-react';
+import useAuth from '../../Hooks/useAuth';
+import useUserRole from '../../Hooks/useUserRole';
+import Swal from 'sweetalert2';
 
 const HeroSection = () => {
+  const { user } = useAuth();
+  const { role, roleLoading } = useUserRole();
+
+  const handleTrackClick = (e) => {
+    if (!user) {
+      e.preventDefault();
+      Swal.fire({
+        icon: 'warning',
+        title: 'Login Required',
+        text: 'Please login to track your parcel',
+        confirmButtonColor: '#3b82f6',
+        confirmButtonText: 'OK'
+      });
+      return;
+    }
+
+    
+    if (roleLoading) {
+      e.preventDefault();
+      return;
+    }
+
+  
+    if (role && role !== 'user') {
+      e.preventDefault();
+      Swal.fire({
+        icon: 'error',
+        title: 'Access Denied',
+        text: `Sorry, ${role}s cannot access tracking page. Only users can track parcels.`,
+        confirmButtonColor: '#3b82f6',
+        confirmButtonText: 'OK'
+      });
+      return;
+    }
+  };
+
   return (
-    <div className=" bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 relative overflow-hidden">
+    <div className="bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 relative overflow-hidden">
       {/* Decorative background elements */}
       <div className="absolute top-20 left-10 w-72 h-72 md:w-96 md:h-96 bg-blue-100 rounded-full mix-blend-multiply filter blur-3xl opacity-40"></div>
       <div className="absolute bottom-20 right-10 w-72 h-72 md:w-96 md:h-96 bg-indigo-100 rounded-full mix-blend-multiply filter blur-3xl opacity-40"></div>
@@ -33,8 +72,12 @@ const HeroSection = () => {
             </div>
 
             {/* CTA Buttons */}
-           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center lg:justify-start">
-              <a href="/dashboard/track" className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center gap-2 text-sm sm:text-base">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center lg:justify-start">
+              <a 
+                href="/dashboard/track" 
+                onClick={handleTrackClick}
+                className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center gap-2 text-sm sm:text-base"
+              >
                 Track Your Parcel
                 <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
