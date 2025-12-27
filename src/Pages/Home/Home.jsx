@@ -1,12 +1,12 @@
                                         
-import Banner from '../Banner/Banner';
-import Worksection from '../Banner/Worksection';
 import Services from '../Banner/Services';
 import TrustedBy from '../Banner/TrustedBy'
-import MerchantBanner from '../Banner/MerchantBanner';
 import Testimonial from '../Banner/Testimonial';
 import FAQSection from '../Banner/FAQSection';
 import { HeadProvider, Title  } from 'react-head';
+import HeroSection from '../Banner/HeroSection';
+import HowItWorks from '../Banner/HowItWorks';
+import Merchant from '../Banner/Merchant';
 
 
 const Home = () => {
@@ -16,11 +16,12 @@ const Home = () => {
         <HeadProvider>
             <Title>Parcel Pilot || Home</Title>
             <div>
-                <Banner />
-                <Worksection />
+               
+                <HeroSection/>
+                <HowItWorks/>
                 <Services />
                 <TrustedBy />
-                <MerchantBanner />
+                <Merchant/>
                 <Testimonial />
                 <FAQSection />
             </div>
