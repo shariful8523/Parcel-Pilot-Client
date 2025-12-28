@@ -1,104 +1,88 @@
-import React from "react";
-import Marquee from "react-fast-marquee";
-import Casio from "../../assets/brands/casio.png";
-import Amazon from "../../assets/brands/amazon_vector.png";
-import Moonstar from "../../assets/brands/moonstar.png";
-import Star from "../../assets/brands/start.png";
-import StartPeople from "../../assets/brands/start-people 1.png";
-import Randstad from "../../assets/brands/randstad.png";
+import React from 'react';
+import { Package, Shield, Headphones } from 'lucide-react';
 
-import TrackingImg from "../../assets/live-tracking.png";
-import SafeImg from "../../assets/safe-delivery.png";
-import SupportImg from "../../assets/safe-delivery.png";
+const ServiceFeatures = () => {
+  const features = [
+    {
+      icon: Package,
+      title: "Live Parcel Tracking",
+      description: "Stay updated in real-time with our live parcel tracking feature. From pick-up to delivery, monitor your shipment's journey and get instant status updates for complete peace of mind.",
+      gradient: "from-blue-500 to-cyan-500"
+    },
+    {
+      icon: Shield,
+      title: "100% Safe Delivery",
+      description: "We ensure your parcels are handled with the utmost care and delivered securely to their destination. Our reliable process guarantees safe and damage-free delivery every time.",
+      gradient: "from-emerald-500 to-teal-500"
+    },
+    {
+      icon: Headphones,
+      title: "24/7 Call Center Support",
+      description: "Our dedicated support team is available around the clock to assist you with any questions, updates, or delivery concerns—anytime you need us.",
+      gradient: "from-purple-500 to-pink-500"
+    }
+  ];
 
-const logos = [Casio, Amazon, Moonstar, Star, StartPeople, Randstad];
-
-const features = [
-  {
-    title: "Live Parcel Tracking",
-    description:
-      "Stay updated in real-time with our live parcel tracking feature. From pick-up to delivery, monitor your shipment's journey and get instant status updates for complete peace of mind.",
-    image: TrackingImg,
-  },
-  {
-    title: "100% Safe Delivery",
-    description:
-      "We ensure your parcels are handled with the utmost care and delivered securely to their destination. Our reliable process guarantees safe and damage-free delivery every time.",
-    image: SafeImg,
-  },
-  {
-    title: "24/7 Call Center Support",
-    description:
-      "Our dedicated support team is available around the clock to assist you with any questions, updates, or delivery concerns—anytime you need us.",
-    image: SupportImg,
-  },
-];
-
-const TrustedBy = () => {
   return (
-    <section className="w-10/12 mx-auto py-16">
-      <div className="w-11/12 mx-auto text-center">
-        {/* Title */}
-        <h2 className="text-2xl mb-8 font-semibold text-gray-800">
-          We’ve helped thousands of sales teams
-        </h2>
+    <div className=" bg-gradient-to-br from-gray-50 to-gray-100 py-8 sm:py-12 md:py-16 px-4 sm:px-6 lg:px-8">
+      <div className="w-10/12 mx-auto">
+        <div className="text-center mb-8 sm:mb-12 md:mb-16">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-800 mb-3 sm:mb-4 px-4">
+            Why Choose Our Service
+          </h2>
+          <p className="text-gray-600 text-sm sm:text-base md:text-lg max-w-2xl mx-auto px-4">
+            Experience seamless delivery with our comprehensive features designed for your convenience
+          </p>
+        </div>
 
-        {/* Marquee Logos */}
-        <Marquee
-          gradient={false}
-          speed={50}
-          pauseOnHover={true}
-          className="flex items-center"
-        >
-          {logos.concat(logos).map((logo, index) => (
-            <div key={index} className="flex-shrink-0 mx-6">
-              <img
-                src={logo}
-                alt="brand"
-                className="w-32 sm:w-40 h-auto object-contain"
-              />
-            </div>
-          ))}
-        </Marquee>
-
-        <hr className="border-dashed border-t-2 border-gray-300 my-12" />
-
-        {/* Feature Cards */}
-        <div className="flex flex-col gap-6 mt-12">
-          {features.map((item, index) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+          {features.map((feature, index) => (
             <div
               key={index}
-              className="w-11/12 mx-auto flex flex-col md:flex-row items-start md:items-center gap-6 p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition"
+              className="group bg-white rounded-xl sm:rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden transform hover:-translate-y-1 sm:hover:-translate-y-2"
             >
-              {/* Left Image */}
-              <div className="flex-shrink-0 mx-auto md:mx-0">
-                <img
-                  src={item.image}
-                  alt={item.title}
-                  className="w-28 h-28 object-contain"
-                />
-              </div>
+              <div className={`h-1.5 sm:h-2 bg-gradient-to-r ${feature.gradient}`}></div>
+              
+              <div className="p-6 sm:p-8">
+                <div className={`w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-lg sm:rounded-xl bg-gradient-to-r ${feature.gradient} flex items-center justify-center mb-4 sm:mb-6 group-hover:scale-110 transition-transform duration-300`}>
+                  <feature.icon className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-white" />
+                </div>
 
-              {/* Vertical Divider */}
-              <div className="hidden md:block h-28 border-l-2 border-dashed border-gray-300 mx-4"></div>
-
-              {/* Right Content */}
-              <div className="text-left flex-1 mt-4 md:mt-0">
-                <h3 className="text-lg font-bold text-[#083E4B] mb-2">
-                  {item.title}
+                <h3 className="text-xl sm:text-2xl font-bold text-gray-800 mb-3 sm:mb-4">
+                  {feature.title}
                 </h3>
-                <p className="text-gray-600 text-sm leading-relaxed break-words">
-                  {item.description}
+
+                <p className="text-gray-600 leading-relaxed text-sm sm:text-base">
+                  {feature.description}
                 </p>
               </div>
+
+              <div className={`h-0.5 sm:h-1 bg-gradient-to-r ${feature.gradient} transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300`}></div>
             </div>
           ))}
         </div>
 
-        <hr className="border-dashed border-t-2 border-gray-300 my-12" />
+        <div className="mt-12 sm:mt-16 text-center px-4">
+          <div className="inline-flex flex-col sm:flex-row items-center gap-4 sm:gap-6 md:gap-8 bg-white rounded-2xl sm:rounded-full px-6 sm:px-8 py-6 sm:py-4 shadow-md w-full sm:w-auto max-w-lg sm:max-w-none">
+            <div className="text-center min-w-[80px]">
+              <p className="text-2xl sm:text-3xl font-bold text-gray-800">50K+</p>
+              <p className="text-xs sm:text-sm text-gray-600 mt-1">Deliveries</p>
+            </div>
+            <div className="w-full sm:w-px h-px sm:h-12 bg-gray-300"></div>
+            <div className="text-center min-w-[80px]">
+              <p className="text-2xl sm:text-3xl font-bold text-gray-800">98%</p>
+              <p className="text-xs sm:text-sm text-gray-600 mt-1">On-Time</p>
+            </div>
+            <div className="w-full sm:w-px h-px sm:h-12 bg-gray-300"></div>
+            <div className="text-center min-w-[80px]">
+              <p className="text-2xl sm:text-3xl font-bold text-gray-800">24/7</p>
+              <p className="text-xs sm:text-sm text-gray-600 mt-1">Support</p>
+            </div>
+          </div>
+        </div>
       </div>
-    </section>
+    </div>
   );
 };
 
-export default TrustedBy;
+export default ServiceFeatures;

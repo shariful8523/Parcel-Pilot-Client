@@ -50,7 +50,7 @@ const HowItWorks = () => {
                 <div className="absolute top-1/2 left-1/2 w-96 h-96 bg-indigo-200/20 rounded-full blur-3xl animate-pulse delay-500"></div>
             </div>
 
-            <div className="w-11/12 mx-auto relative z-10">
+            <div className="w-10/12 mx-auto relative z-10">
                 {/* Header with Animation */}
                 <div className="text-center mb-16 sm:mb-20">
                     <div className="inline-flex items-center gap-2 px-6 py-3 bg-white rounded-full text-sm font-medium tracking-wider mb-6 shadow-lg border border-blue-100">
